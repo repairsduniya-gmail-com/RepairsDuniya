@@ -1,123 +1,158 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:repair_duniya/Model_Screens/Home_Screen/home.dart';
-// import 'package:repair_duniya/Model_Screens/Home_boarding_Screen/auth.dart';
+import 'package:repair_duniya/Model_Screens/Home_boarding_Screen/auth.dart';
+import 'package:repair_duniya/Model_Screens/Home_boarding_Screen/user.dart';
 import 'package:repair_duniya/Model_Screens/Login_All_Screen/otp.dart';
-// import 'package:repair_duniya/SplashView.dart';
-// import 'package:provider/provider.dart';
+import 'package:repair_duniya/SplashView.dart';
+import 'package:provider/provider.dart';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:repair_duniya/SplashView.dart';
 
 enum AuthMode { Signup, Login }
 
 // ignore: must_be_immutable
-class home_board extends StatelessWidget {
+class home_board extends StatefulWidget {
   home_board({super.key});
 
+  @override
+  State<home_board> createState() => _home_boardState();
+}
+
+class _home_boardState extends State<home_board> {
   FocusNode emailFocusnode = FocusNode();
+
   FocusNode usernameFocusnode = FocusNode();
+
   FocusNode mobileFocusnode = FocusNode();
+
   FocusNode buttonFocusnode = FocusNode();
+
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController usernameController = TextEditingController();
+
   final TextEditingController phoneNumberController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    String generateRandomPassword({int length = 8}) {
-      const String chars =
-          'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      final random = Random();
-      String password = '';
+    final userDataProvider =
+        Provider.of<UserDataProvider>(context, listen: false);
 
-      for (int i = 0; i < length; i++) {
-        password += chars[random.nextInt(chars.length)];
-      }
+    // String generateRandomPassword({int length = 8}) {
+    //   const String chars =
+    //       'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    //   const String Specialchar = '@#\$%*';
+    //   final random = Random();
+    //   String password = '';
 
-      return password;
-    }
+    //   for (int i = 0; i < length; i++) {
+    //     password += chars[random.nextInt(chars.length)];
+    //     password += chars[random.nextInt(Specialchar.length)];
+    //   }
 
-    String generateOTP() {
-      Random random = Random();
-      int otp = random.nextInt(900000) + 100000;
-      return otp.toString();
-    }
+    //   return password;
+    // }
 
-    Future<void> signup() async {
-      final email = emailController.text;
-      final username = usernameController.text;
-      final phoneNumber = phoneNumberController.text;
+    // String generateOTP() {
+    //   Random random = Random();
+    //   int otp = random.nextInt(900000) + 100000;
+    //   return otp.toString();
+    // }
 
-      try {
-        // Create a new user with email and password
-        final UserCredential userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email,
-          password:
-              generateRandomPassword(), // Replace with your logic to generate a password
-        );
+    // Future<void> signup() async {
+    //   final email = emailController.text;
+    //   final username = usernameController.text;
+    //   final phoneNumber = phoneNumberController.text;
 
-        // Get the generated user ID
-        final userId = userCredential.user!.uid;
+    //   try {
+    //     // Create a new user with email and password
+    //     final UserCredential userCredential =
+    //         await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    //       email: email,
+    //       password:
+    //           generateRandomPassword(), // Replace with your logic to generate a password
+    //     );
 
-        // Save user details to Firebase Realtime Database
-        final DatabaseReference userRef =
-            FirebaseDatabase.instance.reference().child('users/$userId');
-        userRef.set({
-          'email': email,
-          'username': username,
-          'phoneNumber': phoneNumber,
-        });
+    //     // Get the generated user ID
+    //     final userId = userCredential.user!.uid;
 
-        // // Generate and send OTP
-        // final otp = generateOTP(); // Replace with your logic to generate an OTP
-        // await sendOTP(phoneNumber, otp); // Replace with your logic to send OTP using an SMS gateway
+    //     // Save user details to Firebase Realtime Database
+    //     final DatabaseReference userRef =
+    //         FirebaseDatabase.instance.reference().child('users/$userId');
+    //     userRef.set({
+    //       'email': email,
+    //       'username': username,
+    //       'phoneNumber': phoneNumber,
+    //     });
 
-        // Proceed with OTP verification
-        // ...
-      } catch (error) {
-        //print('Signup error: $error');
-        // Handle signup error
-      }
-    }
-    // final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    //     // // Generate and send OTP
+    //     // final otp = generateOTP(); // Replace with your logic to generate an OTP
+    //     // await sendOTP(phoneNumber, otp); // Replace with your logic to send OTP using an SMS gateway
 
-    void _submitForm() {
-      if (_formKey.currentState!.validate()) {
-        // final userProvider = Provider.of<UserProvider>(context, listen: false);
+    //     // Proceed with OTP verification
+    //     // ...
+    //   } catch (error) {
+    //     print('Signup error: $error');
+    //     // Handle signup error
+    //   }
+    // }
+    // // final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
-        Future<void> storeUserData(
-            String email, String phoneNumber, String username) async {
-          try {
-            CollectionReference users =
-                FirebaseFirestore.instance.collection('users');
-            await users.add({
-              'email': email,
-              'phone': phoneNumber,
-              'username': username,
-            });
-            // User data stored successfully
-          } catch (e) {
-            // Handle data storage errors
-          }
-        }
+    // void _submitForm() {
+    //   if (_formKey.currentState!.validate()) {
+    //     // final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-        // userProvider.setUserDetails(
-        //   emailController.text,
-        //   usernameController.text,
-        //   phoneNumberController.text,
-        // );
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const SplashView()),
-        );
-        signup();
-      }
-    }
+    //     void _storeAddressToFirebase(
+    //         String email, String phoneNumber, String username) async {
+    //       try {
+    //         setState(() {
+    //           final docRecord = FirebaseFirestore.instance
+    //               .collection('user')
+    //               .doc(FirebaseAuth.instance.currentUser?.uid);
+    //           docRecord.set({
+    //             'email': email,
+    //             'phone': phoneNumber,
+    //             'username': username,
+    //           });
+    //         });
+    //       } catch (e) {
+    //         print('Error storing address in Firestore: $e');
+    //       }
+    //     }
+
+    //     Future<void> storeUserData(
+    //         String email, String phoneNumber, String username) async {
+    //       try {
+    //         CollectionReference users =
+    //             FirebaseFirestore.instance.collection('users');
+    //         await users.add({
+    //           'email': email,
+    //           'phone': phoneNumber,
+    //           'username': username,
+    //         });
+    //         // User data stored successfully
+    //       } catch (e) {
+    //         // Handle data storage errors
+    //       }
+    //     }
+
+    // userProvider.setUserDetails(
+    //   emailController.text,
+    //   usernameController.text,
+    //   phoneNumberController.text,
+    // );
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(builder: (context) => MyOtp()),
+    //     );
+    //     signup();
+    //   }
+    // }
     // void _handleSubmitted() {
     //   final String username = usernameController.text.trim();
     //   final String email = emailController.text.trim();
@@ -171,7 +206,7 @@ class home_board extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  height: 465.h,
+                  height: 470.h,
                   width: 330.w,
                   decoration: BoxDecoration(
                     image: const DecorationImage(
@@ -302,7 +337,44 @@ class home_board extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50)),
                                   backgroundColor: Colors.blue[200]),
-                              onPressed: _submitForm,
+                              onPressed: () {
+                                final email =
+                                    emailController.text; // Get email value
+                                final username = usernameController
+                                    .text; // Get username value
+                                final phoneNumber = phoneNumberController
+                                    .text; // Get phone number value
+
+                                // Call the function to store user data using the provider
+                                userDataProvider.storeUserData(
+                                    email, username, phoneNumber);
+
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Myhome()));
+                              },
+                              //   void _storeAddressToFirebase(String email,
+                              //       String phoneNumber, String username) async {
+                              //     try {
+                              //       setState(() {
+                              //         final docRecord = FirebaseFirestore
+                              //             .instance
+                              //             .collection('user')
+                              //             .doc(FirebaseAuth
+                              //                 .instance.currentUser?.uid);
+                              //         docRecord.set({
+                              //           'email': email,
+                              //           'phone': phoneNumber,
+                              //           'username': username,
+                              //         });
+                              //       });
+                              //     } catch (e) {
+                              //       print(
+                              //           'Error storing address in Firestore: $e');
+                              //     }
+                              //   }
+                              // },
                               child: Text(
                                 "Get Started",
                                 style: TextStyle(

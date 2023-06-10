@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:repair_duniya/pop_Up_Screen/Date_Screen.dart';
 import 'package:repair_duniya/pop_Up_Screen/Describe_Screen.dart';
 
@@ -16,6 +17,17 @@ void showCustomModalBottomSheet(BuildContext context) {
       return ModalBotoomSheet();
     },
   );
+}
+
+class SelectedServiceProvider with ChangeNotifier {
+  String? _selectedService;
+
+  String? get selectedService => _selectedService;
+
+  void setSelectedService(String service) {
+    _selectedService = service;
+    notifyListeners();
+  }
 }
 
 class ModalBotoomSheet extends StatefulWidget {
@@ -43,6 +55,13 @@ class _ModalBotoomSheetState extends State<ModalBotoomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedServiceProvider =
+        Provider.of<SelectedServiceProvider>(context, listen: false);
+
+    void selectService(String service) {
+      selectedServiceProvider.setSelectedService(service);
+    }
+
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -109,7 +128,10 @@ class _ModalBotoomSheetState extends State<ModalBotoomSheet> {
                                 )),
                                 foregroundColor:
                                     MaterialStatePropertyAll(Colors.black)),
-                            onPressed: toggleContent_install,
+                            onPressed: () {
+                              selectService('installation');
+                              toggleContent_install();
+                            },
                             child: Text(
                               "Installation",
                               style: TextStyle(
@@ -141,7 +163,10 @@ class _ModalBotoomSheetState extends State<ModalBotoomSheet> {
                                 )),
                                 foregroundColor: const MaterialStatePropertyAll(
                                     Colors.black)),
-                            onPressed: toggleContent,
+                            onPressed: () {
+                              selectService('repair');
+                              toggleContent();
+                            },
                             child: Text(
                               "Repair",
                               style: TextStyle(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:repair_duniya/Model_Screens/Home_Screen/serviceName.dart';
 import 'package:repair_duniya/Model_Screens/Home_Screen/services/services.dart';
 import 'package:repair_duniya/Model_Screens/Home_Screen/services/whats_broken.dart';
 import 'package:repair_duniya/icon_Screen.dart/painter.dart';
@@ -8,6 +10,53 @@ import 'package:repair_duniya/icon_Screen.dart/screen_widgets.dart';
 
 // import 'package:Repair-Duniya/lib/icon_Screen.dart/tv.dart';
 // import 'package:repair-duniya/icon_Screen.dart/tv.dart';
+class homeIcon extends StatelessWidget {
+  String Name, img, img1, img2;
+  homeIcon(this.Name, this.img, this.img1, this.img2);
+
+  @override
+  Widget build(BuildContext context) {
+    final serviceProvider =
+        Provider.of<serviceIdprovider>(context, listen: false);
+    return Column(
+      children: [
+        Material(
+          type: MaterialType.transparency,
+          child: Ink(
+            height: 60.w,
+            width: 60.w,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(7),
+              // border: Border.all(width: 1, color: Colors.grey),
+              color: Colors.white,
+              image: DecorationImage(
+                image: ExactAssetImage(img),
+                fit: BoxFit.scaleDown,
+              ),
+            ),
+            child: InkWell(
+              onTap: () {
+                serviceProvider.setSelectedService(Name);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Icons_widget(img1, img2, Name)),
+                );
+              },
+            ),
+          ),
+        ),
+        Column(
+          children: [
+            homeIconText(
+              Name,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
 
 Widget homeIconText(String text) {
   return Text(text,
@@ -15,437 +64,93 @@ Widget homeIconText(String text) {
 }
 
 Widget AC(BuildContext context) {
-  return Column(
-    children: [
-      Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          height: 50.w,
-          width: 50.w,
-          decoration: BoxDecoration(
-            image: const DecorationImage(
-              image: ExactAssetImage('assets/air-conditioner.png'),
-              fit: BoxFit.scaleDown,
-            ),
-            borderRadius: BorderRadius.circular(7),
-            // border: Border.all(width: 1, color: Colors.grey),
-            color: Colors.white,
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Icons_widget(
-                        "screen_assets/ac-service-mistribabu.png",
-                        "screen_assets/ac1.jpeg",
-                        "Air Conditioner")),
-              );
-            },
-          ),
-        ),
-      ),
-      Column(
-        children: [
-          homeIconText('AC'),
-        ],
-      ),
-    ],
+  return homeIcon('AC', 'assets/air-conditioner.png',
+      "screen_assets/ac-service-mistribabu.png", "screen_assets/ac1.jpeg");
+}
+
+Widget Refrigerator(BuildContext context) {
+  return homeIcon(
+    'Refrigerator',
+    'assets/refrigerator.png',
+    "screen_assets/repair-work-fridge-appliance-.jpg",
+    "screen_assets/fridge1.jpg",
   );
 }
 
 Widget Washer(BuildContext context) {
-  return Column(
-    children: [
-      Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          height: 50.w,
-          width: 50.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            // border: Border.all(width: 1, color: Colors.grey),
-            color: Colors.white,
-            image: const DecorationImage(
-                image: ExactAssetImage('assets/washing-machine.png'),
-                fit: BoxFit.contain),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Icons_widget(
-                        "screen_assets/wash1.jpeg",
-                        "screen_assets/wash2.jpeg",
-                        "Washing Machine")),
-              );
-            },
-          ),
-        ),
-      ),
-      Column(
-        children: [
-          homeIconText('Washing\nMachine'),
-        ],
-      ),
-    ],
+  return homeIcon(
+    'Washing Machine',
+    'assets/washing-machine.png',
+    "screen_assets/oven1.jpeg",
+    "screen_assets/oven2.jpg",
   );
 }
 
 Widget Oven(BuildContext context) {
-  return Column(
-    children: [
-      Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          height: 50.w,
-          width: 50.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            // border: Border.all(width: 1, color: Colors.grey),
-            color: Colors.white,
-            image: const DecorationImage(
-              image: ExactAssetImage('assets/oven.png'),
-              fit: BoxFit.scaleDown,
-            ),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Icons_widget(
-                        "screen_assets/oven1.jpeg",
-                        "screen_assets/oven2.jpg",
-                        "Microwave Oven")),
-              );
-            },
-          ),
-        ),
-      ),
-      Column(
-        children: [
-          homeIconText('Oven'),
-        ],
-      ),
-    ],
-  );
-}
-
-Widget Refrigerator(BuildContext context) {
-  return Column(
-    children: [
-      Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          height: 50.w,
-          width: 50.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            // border: Border.all(width: 1, color: Colors.grey),
-            color: Colors.white,
-            image: const DecorationImage(
-              image: ExactAssetImage('assets/refrigerator.png'),
-              fit: BoxFit.scaleDown,
-            ),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Icons_widget(
-                        "screen_assets/repair-work-fridge-appliance-.jpg",
-                        "screen_assets/fridge1.jpg",
-                        "Refrigerator")),
-              );
-            },
-          ),
-        ),
-      ),
-      Column(
-        children: [
-          homeIconText('Refrigerator'),
-        ],
-      ),
-    ],
+  return homeIcon(
+    'Microwave Oven',
+    'assets/oven.png',
+    "screen_assets/oven1.jpeg",
+    "screen_assets/oven2.jpg",
   );
 }
 
 Widget Fan(BuildContext context) {
-  return Column(
-    children: [
-      Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          height: 50.w,
-          width: 50.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            // border: Border.all(width: 1, color: Colors.grey),
-            color: Colors.white,
-            image: const DecorationImage(
-              image: ExactAssetImage('assets/Fan.png'),
-              fit: BoxFit.scaleDown,
-            ),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Icons_widget("screen_assets/fan1.jpg",
-                        "screen_assets/fan2.jpg", "Fan")),
-              );
-            },
-          ),
-        ),
-      ),
-      Column(
-        children: [
-          homeIconText('Fan'),
-        ],
-      ),
-    ],
-  );
+  return homeIcon('Fan', 'assets/Fan.png', "screen_assets/fan1.jpg",
+      "screen_assets/fan2.jpg");
 }
 
 Widget Motercycle(BuildContext context) {
-  return Column(
-    children: [
-      Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          height: 50.w,
-          width: 50.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            // border: Border.all(width: 1, color: Colors.grey),
-            color: Colors.white,
-            image: const DecorationImage(
-              image: ExactAssetImage('assets/motorbike.png'),
-              fit: BoxFit.scaleDown,
-            ),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Icons_widget(
-                        "screen_assets/oven1.jpeg",
-                        "screen_assets/oven2.jpg",
-                        "Motorcycle")),
-              );
-            },
-          ),
-        ),
-      ),
-      Column(
-        children: [
-          homeIconText('Motercycle'),
-        ],
-      ),
-    ],
+  return homeIcon(
+    'Motorbike',
+    'assets/motorbike.png',
+    "screen_assets/tv2.jpg",
+    "screen_assets/tv3.jpg",
   );
 }
 
 Widget Geyser(BuildContext context) {
-  return Column(
-    children: [
-      Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          height: 50.w,
-          width: 50.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            // border: Border.all(width: 1, color: Colors.grey),
-            color: Colors.white,
-            image: const DecorationImage(
-              image: ExactAssetImage('screen_assets/geyser.png'),
-              fit: BoxFit.scaleDown,
-            ),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Icons_widget(
-                        "screen_assets/oven1.jpeg",
-                        "screen_assets/oven2.jpg",
-                        "Geyser")),
-              );
-            },
-          ),
-        ),
-      ),
-      Column(
-        children: [
-          homeIconText('Geyser'),
-        ],
-      ),
-    ],
+  return homeIcon(
+    'Geyser',
+    'screen_assets/geyser.png',
+    "screen_assets/oven1.jpeg",
+    "screen_assets/oven2.jpg",
   );
 }
 
 Widget Aircooler(BuildContext context) {
-  return Column(
-    children: [
-      Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          height: 50.w,
-          width: 50.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            // border: Border.all(width: 1, color: Colors.grey),
-            color: Colors.white,
-            image: const DecorationImage(
-              image: ExactAssetImage('screen_assets/aircooler.png'),
-              fit: BoxFit.scaleDown,
-            ),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Icons_widget(
-                        "screen_assets/oven1.jpeg",
-                        "screen_assets/oven2.jpg",
-                        "Motorcycle")),
-              );
-            },
-          ),
-        ),
-      ),
-      Column(
-        children: [
-          homeIconText('Air Cooler'),
-        ],
-      ),
-    ],
+  return homeIcon(
+    'Air Cooler',
+    'screen_assets/aircooler.png',
+    "screen_assets/tv2.jpg",
+    "screen_assets/tv3.jpg",
   );
 }
 
 Widget cctv(BuildContext context) {
-  return Column(
-    children: [
-      Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          height: 50.w,
-          width: 50.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            // border: Border.all(width: 1, color: Colors.grey),
-            color: Colors.white,
-            image: const DecorationImage(
-              image: ExactAssetImage('screen_assets/cctv.png'),
-              fit: BoxFit.scaleDown,
-            ),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Icons_widget(
-                        "screen_assets/oven1.jpeg",
-                        "screen_assets/oven2.jpg",
-                        "Motorcycle")),
-              );
-            },
-          ),
-        ),
-      ),
-      Column(
-        children: [
-          homeIconText('CCTV'),
-        ],
-      ),
-    ],
+  return homeIcon(
+    'CCTV',
+    'screen_assets/cctv.png',
+    "screen_assets/tv2.jpg",
+    "screen_assets/tv3.jpg",
   );
 }
 
 Widget Car(BuildContext context) {
-  return Column(
-    children: [
-      Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          height: 50.w,
-          width: 50.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            // border: Border.all(width: 1, color: Colors.grey),
-            color: Colors.white,
-            image: const DecorationImage(
-              image: ExactAssetImage('screen_assets/car.png'),
-              fit: BoxFit.scaleDown,
-            ),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Icons_widget(
-                        "screen_assets/oven1.jpeg",
-                        "screen_assets/oven2.jpg",
-                        "Car")),
-              );
-            },
-          ),
-        ),
-      ),
-      Column(
-        children: [
-          homeIconText('Motorcycle'),
-        ],
-      ),
-    ],
+  return homeIcon(
+    'Car Repair/Service',
+    'screen_assets/car.png',
+    "screen_assets/tv2.jpg",
+    "screen_assets/tv3.jpg",
   );
 }
 
 Widget Television(BuildContext context) {
-  return Column(
-    children: [
-      Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          height: 50.w,
-          width: 50.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            // border: Border.all(width: 1, color: Colors.grey),
-            color: Colors.white,
-            image: const DecorationImage(
-              image: ExactAssetImage('assets/tv.png'),
-              fit: BoxFit.scaleDown,
-            ),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Icons_widget("screen_assets/tv2.jpg",
-                        "screen_assets/tv3.jpg", "Television")),
-              );
-            },
-          ),
-        ),
-      ),
-      Column(
-        children: [
-          homeIconText('Television'),
-        ],
-      ),
-    ],
+  return homeIcon(
+    'Television',
+    'assets/tv.png',
+    "screen_assets/tv2.jpg",
+    "screen_assets/tv3.jpg",
   );
 }
 
@@ -488,106 +193,29 @@ Widget More(BuildContext context) {
 }
 
 Widget Salon(BuildContext context) {
-  return Column(
-    children: [
-      Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          height: 50.w,
-          width: 50.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            // border: Border.all(width: 1, color: Colors.grey),
-            color: Colors.white,
-            image: const DecorationImage(
-              image: ExactAssetImage('assets/salon.png'),
-              fit: BoxFit.scaleDown,
-            ),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MySalon()),
-              );
-            },
-          ),
-        ),
-      ),
-      Column(
-        children: [
-          homeIconText('Men Salon'),
-        ],
-      ),
-    ],
+  return homeIcon(
+    'Unisex Salon & Spa',
+    'assets/salon.png',
+    "screen_assets/tv2.jpg",
+    "screen_assets/tv3.jpg",
   );
 }
 
 Widget Painting(BuildContext context) {
-  return SizedBox(
-    child: Column(
-      children: [
-        Material(
-          type: MaterialType.transparency,
-          child: Ink(
-            height: 50.w,
-            width: 50.w,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(7),
-              // border: Border.all(width: 1, color: Colors.grey),
-              color: Colors.white,
-              image: const DecorationImage(
-                image: ExactAssetImage('assets/paint.png'),
-                fit: BoxFit.scaleDown,
-              ),
-            ),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyPainter()),
-                );
-              },
-            ),
-          ),
-        ),
-        Column(
-          children: [
-            homeIconText('Painting'),
-          ],
-        ),
-      ],
-    ),
+  return homeIcon(
+    'Painting',
+    'assets/paint.png',
+    "screen_assets/tv2.jpg",
+    "screen_assets/tv3.jpg",
   );
 }
 
 Widget Cleaning(BuildContext context) {
-  return Column(
-    children: [
-      Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          height: 50.w,
-          width: 50.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            color: Colors.white,
-            image: const DecorationImage(
-              image: ExactAssetImage('assets/cleaning.png'),
-              fit: BoxFit.scaleDown,
-            ),
-          ),
-          child: InkWell(
-            onTap: () {},
-          ),
-        ),
-      ),
-      Column(
-        children: [
-          homeIconText('Cleaning'),
-        ],
-      ),
-    ],
+  return homeIcon(
+    'Cleaning',
+    'assets/cleaning.png',
+    "screen_assets/tv2.jpg",
+    "screen_assets/tv3.jpg",
   );
 }
 

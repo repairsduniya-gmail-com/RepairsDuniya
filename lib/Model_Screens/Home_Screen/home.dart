@@ -48,7 +48,7 @@ class _homeState extends State<Myhome> {
     return Scaffold(
       key: scaffoldKey,
       drawerEnableOpenDragGesture: false,
-      drawer: const Mydrawer(),
+      drawer: Mydrawer(),
       backgroundColor: Colors.white,
       appBar: AppBar(
         //APP BAR
@@ -82,8 +82,10 @@ class _homeState extends State<Myhome> {
             children: [
               IconButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) =>const Wallet()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Wallet()));
                   },
                   icon:
                       //Image.asset('assets/icons8-wallet.png',scale: 1.8,),
@@ -116,7 +118,8 @@ class _homeState extends State<Myhome> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const SearchLocationScreen()));
+                            builder: (context) =>
+                                const SearchLocationScreen()));
                   },
                   icon: SvgPicture.asset(
                     "assets/location-pin1-com.svg",
@@ -261,8 +264,7 @@ class _homeState extends State<Myhome> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Padding(
-                  padding:
-                      EdgeInsets.only(top: 12.0, left: 12.0, bottom: 8.0),
+                  padding: EdgeInsets.only(top: 12.0, left: 12.0, bottom: 8.0),
                   child: Row(
                     children: [
                       Text(
@@ -312,7 +314,8 @@ class _homeState extends State<Myhome> {
                   height: 5.h,
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: Container(

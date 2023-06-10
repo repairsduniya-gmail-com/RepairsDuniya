@@ -74,7 +74,7 @@ class _Address_sheetState extends State<Address_sheet>
                 borderRadius: BorderRadius.circular(10)),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25),
+            padding: const EdgeInsets.symmetric(vertical: 15),
             child: Center(
                 child: Text(
               "Select Address",
@@ -82,7 +82,7 @@ class _Address_sheetState extends State<Address_sheet>
             )),
           ),
           Container(
-            height: 205.h,
+            height: 300.h,
             child: SearchlocationScreen(),
           ),
           // Padding(
