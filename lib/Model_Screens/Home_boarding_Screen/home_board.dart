@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:repair_duniya/Model_Screens/Home_boarding_Screen/auth.dart';
+import 'package:repair_duniya/Model_Screens/Home_Screen/home.dart';
+// import 'package:repair_duniya/Model_Screens/Home_boarding_Screen/auth.dart';
 import 'package:repair_duniya/Model_Screens/Login_All_Screen/otp.dart';
-import 'package:repair_duniya/SplashView.dart';
-import 'package:provider/provider.dart';
+// import 'package:repair_duniya/SplashView.dart';
+// import 'package:provider/provider.dart';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:repair_duniya/SplashView.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -78,7 +80,7 @@ class home_board extends StatelessWidget {
         // Proceed with OTP verification
         // ...
       } catch (error) {
-        print('Signup error: $error');
+        //print('Signup error: $error');
         // Handle signup error
       }
     }
@@ -111,7 +113,7 @@ class home_board extends StatelessWidget {
         // );
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MyOtp()),
+          MaterialPageRoute(builder: (context) => const SplashView()),
         );
         signup();
       }
@@ -169,7 +171,7 @@ class home_board extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  height: 470.h,
+                  height: 465.h,
                   width: 330.w,
                   decoration: BoxDecoration(
                     image: const DecorationImage(

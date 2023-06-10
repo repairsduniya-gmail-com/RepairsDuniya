@@ -2,12 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 // import 'package:repair_duniya/Model_Screens/Buy_Appliances/buy_appliances.dart';
 // import 'package:repair_duniya/Model_Screens/Home_Screen/drawer.dart';
 import 'package:repair_duniya/Model_Screens/Home_boarding_Screen/home_board.dart';
 import 'package:repair_duniya/Model_Screens/Subscription/subscriptionView.dart';
-import 'package:repair_duniya/SplashView.dart';
+// import 'package:repair_duniya/SplashView.dart';
 import 'package:repair_duniya/icon_Screen.dart/painter.dart';
 import 'package:repair_duniya/icon_Screen.dart/salon.dart';
 import 'package:repair_duniya/Model_Screens/Map_Screen/location_search_screen.dart';
@@ -39,7 +39,7 @@ void main() async {
       'home_board': (context) => home_board(),
       'subscriptionView': (context) => SubscriptionView(),
     },
-    home: home_board(),
+    home: MyApp(),
     debugShowCheckedModeBanner: false,
   ));
 }

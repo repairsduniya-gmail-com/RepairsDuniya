@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
+// import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,12 +13,12 @@ import 'package:repair_duniya/components.dart/location_list_tile.dart';
 import 'package:repair_duniya/components.dart/network_utility.dart';
 import 'package:repair_duniya/models/autocomplate_prediction.dart';
 import 'package:repair_duniya/models/constant.dart';
-import 'package:repair_duniya/components.dart/location_list_tile.dart';
-import 'package:repair_duniya/models/constant.dart';
-import 'package:repair_duniya/models/place_auto_complate_response.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:repair_duniya/pop_Up_Screen/address.dart';
+// import 'package:repair_duniya/components.dart/location_list_tile.dart';
+// import 'package:repair_duniya/models/constant.dart';
+// import 'package:repair_duniya/models/place_auto_complate_response.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_database/firebase_database.dart';
+// import 'package:repair_duniya/pop_Up_Screen/address.dart';
 
 class SearchlocationScreen extends StatefulWidget {
   // final DeliveryStatusScreen widgetA;
@@ -187,21 +187,21 @@ class _SearchlocationScreenState extends State<SearchlocationScreen> {
             ),
           ),
           isLoading1
-              ? CircularProgressIndicator()
+              ? const CircularProgressIndicator()
               : _currentAddress != null
                   ? Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Column(children: [
                         Text(
                           _currentAddress!,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 17,
                           ),
                           textAlign: TextAlign.center,
                         ),
                         DeliveryStatusScreen()
                       ]))
-                  : Divider(
+                  : const Divider(
                       height: 4,
                       thickness: 3,
                       // color: Colors.grey.shade300,

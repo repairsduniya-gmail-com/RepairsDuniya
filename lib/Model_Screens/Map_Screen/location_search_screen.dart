@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
+// import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,16 +8,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:repair_duniya/Model_Screens/Map_Screen/location_service.dart';
+// import 'package:repair_duniya/Model_Screens/Map_Screen/location_service.dart';
 import 'package:repair_duniya/components.dart/location_list_tile.dart';
 import 'package:repair_duniya/components.dart/network_utility.dart';
 import 'package:repair_duniya/models/autocomplate_prediction.dart';
 import 'package:repair_duniya/models/constant.dart';
-import 'package:repair_duniya/components.dart/location_list_tile.dart';
-import 'package:repair_duniya/models/constant.dart';
-import 'package:repair_duniya/models/place_auto_complate_response.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
+// import 'package:repair_duniya/components.dart/location_list_tile.dart';
+// import 'package:repair_duniya/models/constant.dart';
+// import 'package:repair_duniya/models/place_auto_complate_response.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_database/firebase_database.dart';
 
 class SearchLocationScreen extends StatefulWidget {
   const SearchLocationScreen({Key? key}) : super(key: key);
