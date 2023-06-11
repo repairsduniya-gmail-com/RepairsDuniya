@@ -158,11 +158,11 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                   fillColor: Colors.white,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
-                    borderSide: BorderSide(color: Colors.grey),
+                    borderSide: const BorderSide(color: Colors.grey),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
-                    borderSide: BorderSide(color: Colors.grey),
+                    borderSide: const BorderSide(color: Colors.grey),
                   ),
                   hintText: "Search your location",
                   hintStyle: TextStyle(fontSize: 18.sp),
@@ -178,7 +178,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
             ),
           ),
           Divider(
-            height: 4,
+            height: 3,
             thickness: 3,
             color: Colors.grey.shade300,
           ),
@@ -218,7 +218,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
             ),
           ),
           isLoading1
-              ? CircularProgressIndicator()
+              ?  CircularProgressIndicator()
               : _currentAddress != null
                   ? Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -245,6 +245,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
               ),
             ),
           ),
+
         ],
       ),
     );
