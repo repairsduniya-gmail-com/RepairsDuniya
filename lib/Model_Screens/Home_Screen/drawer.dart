@@ -7,16 +7,19 @@ import 'package:repair_duniya/Model_Screens/Help_Support/support.dart';
 import 'package:repair_duniya/Model_Screens/Home_Screen/services/all_services.dart';
 
 import '../Home_boarding_Screen/auth.dart';
+import '../Home_boarding_Screen/user.dart';
 
 // function to trigger app build
 class Mydrawer extends StatelessWidget {
-  const Mydrawer({super.key});
+  // const Mydrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // final userProvider = Provider.of<UserProvider>(context);
-    // String? phoneNumber = userProvider.phoneNumber;
-    // String? userName = userProvider.username;
+    final userProvider = Provider.of<UserDataProvider>(context);
+    String? email = userProvider.userData!.email;
+    String? username = userProvider.userData!.username;
+    String firstCharacter =
+        username != null && username.isNotEmpty ? username.substring(0, 1) : '';
 
     return Drawer(
       child: Stack(
@@ -24,7 +27,7 @@ class Mydrawer extends StatelessWidget {
           ListView(
             padding: const EdgeInsets.all(0),
             children: [
-              const DrawerHeader(
+              DrawerHeader(
                 decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.only(
@@ -32,22 +35,28 @@ class Mydrawer extends StatelessWidget {
                         bottomRight: Radius.circular(15))
                     // color: Color.fromARGB(255, 15, 30, 41),
                     ), //BoxDecoration
-                child: UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(color: null),
-                  accountName: Text(
-                    "Ajay Yadav",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  accountEmail: Text("ay3404869@gmail.com"),
-                  currentAccountPictureSize: Size.square(50),
-                  currentAccountPicture: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Text(
-                      "A",
-                      style: TextStyle(fontSize: 30.0, color: Colors.blue),
-                    ), //Text
-                  ), //circleAvatar
-                ), //UserAccountDrawerHeader
+                child: Consumer<UserDataProvider>(
+                    builder: (context, userProvider, _) {
+                  String? email = userProvider.userData?.email;
+                  String? userName = userProvider.userData?.username;
+
+                  return UserAccountsDrawerHeader(
+                    decoration: BoxDecoration(color: null),
+                    accountName: Text(
+                      username!,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    accountEmail: Text(email!),
+                    currentAccountPictureSize: Size.square(50),
+                    currentAccountPicture: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Text(
+                        firstCharacter,
+                        style: TextStyle(fontSize: 30.0, color: Colors.blue),
+                      ), //Text
+                    ), //circleAvatar
+                  );
+                }), //UserAccountDrawerHeader
               ),
               Column(
                 children: [

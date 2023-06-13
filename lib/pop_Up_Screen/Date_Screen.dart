@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:repair_duniya/Model_Screens/Map_Screen/location_service.dart';
 
 import 'package:repair_duniya/pop_Up_Screen/address.dart';
@@ -9,6 +10,29 @@ class DateBottomSheet extends StatefulWidget {
 
   @override
   State<DateBottomSheet> createState() => _DateBottomSheetState();
+}
+
+class dateTime with ChangeNotifier {
+  DateTime? userSelectedDate;
+
+  void setSelectedDate(DateTime Date) {
+    userSelectedDate = Date;
+    notifyListeners();
+  }
+
+  // ... other methods and functionalities of your provider class
+}
+
+class SelectedTime with ChangeNotifier {
+  int selectedIndex = 0; // Initial selected index
+  List<String> toggleValues = ['Morning', 'Afternoon', 'Evening'];
+  String get selectedValue => toggleValues[selectedIndex];
+
+  void setToggleValue(int index) {
+    selectedIndex = index;
+    notifyListeners();
+  }
+  // ... other methods and functionalities of your provider class
 }
 
 class _DateBottomSheetState extends State<DateBottomSheet>
@@ -55,36 +79,6 @@ class _DateBottomSheetState extends State<DateBottomSheet>
         child: SizedBox(
             height: 20,
             width: 110,
-            // child: OutlinedButton(
-            //     style: ButtonStyle(
-            // backgroundColor: _hasBeenPressed
-            //     ? MaterialStateProperty.all(Colors.black)
-            //     : MaterialStateProperty.all(Colors.white),
-            //   shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            //     borderRadius: BorderRadius.circular(30.0),
-            //     side: BorderSide(width: 10.0, color: Colors.black),
-            //   )),
-            //   // overlayColor: MaterialStateProperty.resolveWith<Color?>(
-            //   //   (Set<MaterialState> states) {
-            //   //     if (states.contains(MaterialState.pressed))
-            //   //       return Colors.black; //<-- SEE HERE
-            //   //     return Colors.white; // Defer to the widget's default.
-            //   //   },
-            //   // ),
-            // ),
-            // onPressed: () {
-            //   // setState(() {
-            //   //   // _hasBeenPressed = !_hasBeenPressed;
-            //   // });
-            //   // ButtonStyle(
-            //   //   backgroundColor:
-            //   //       MaterialStateProperty.all(Colors.black),
-            //   //   shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            //   //     borderRadius: BorderRadius.circular(30.0),
-            //   //     side: BorderSide(width: 10.0, color: Colors.black),
-            //   //   )),
-            //   // );
-            // },
             child: Center(
               child: Text(
                 Time,
@@ -170,27 +164,35 @@ class _DateBottomSheetState extends State<DateBottomSheet>
               ],
             ),
           ),
-          ToggleButtons(
-            direction: Axis.horizontal,
-            onPressed: (index) {
-              setState(() {
-                // The button that is tapped is set to true, and the others to false.
-                for (int i = 0; i < _selectedTime.length; i++) {
-                  _selectedTime[i] = i == index;
-                }
-              });
-            },
-            borderRadius: BorderRadius.circular(10),
-            selectedColor: Colors.white,
-            fillColor: Colors.blue,
-            color: Colors.black,
-            isSelected: _selectedTime,
-            children: [
-              button('Morning'),
-              button('Afternoon'),
-              button('Evening')
-            ],
-          ),
+          Consumer<SelectedTime>(builder: (context, provider, _) {
+            return ToggleButtons(
+              direction: Axis.horizontal,
+              onPressed: (index) {
+                provider.setToggleValue(index);
+                setState(() {
+                  // The button that is tapped is set to true, and the others to false.
+                  for (int i = 0; i < _selectedTime.length; i++) {
+                    _selectedTime[i] = i == index;
+                  }
+                });
+              },
+              borderRadius: BorderRadius.circular(10),
+              selectedColor: Colors.white,
+              fillColor: Colors.blue,
+              color: Colors.black,
+              isSelected: List<bool>.generate(
+                  3,
+                  (index) =>
+                      index ==
+                      provider
+                          .selectedIndex), // Only the selected index will be true
+              children: [
+                button('Morning'),
+                button('Afternoon'),
+                button('Evening')
+              ],
+            );
+          }),
 
           Stack(children: [
             Padding(
@@ -244,7 +246,8 @@ class _dateTimepickerState extends State<dateTimepicker> {
   bool isChoosen = false;
   // DateTime SelectedDate = dateFormat.format(FirstDate);
 
-  void _showDatePicker(context) {
+  void _showDatePicker(BuildContext context) async {
+    final datePickerProvider = Provider.of<dateTime>(context, listen: false);
     showDatePicker(
             context: context,
             initialDate: DateTime.now(),
@@ -256,6 +259,7 @@ class _dateTimepickerState extends State<dateTimepicker> {
       }
       setState(() {
         _selectedDate = pickedDate;
+        datePickerProvider.setSelectedDate(pickedDate);
         // DateTime(pickedDate.day, pickedDate.month, pickedDate.year);
       });
     });
@@ -272,67 +276,6 @@ class _dateTimepickerState extends State<dateTimepicker> {
               // : dateFormat.format(_selectedDate),
               style: TextStyle(fontSize: 20, color: Colors.black),
             )
-          // : GridView.builder(
-          //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //         crossAxisCount: 3),
-          //     shrinkWrap: true,
-          //     // scrollDirection: Axis.horizontal,
-          //     physics: NeverScrollableScrollPhysics(),
-          //     itemCount: 3,
-          //     itemBuilder: (context, index) => Padding(
-          //       padding: EdgeInsets.all(10),
-          //       child: Container(
-          //         height: 20,
-          //         width: 20,
-          //         child: ElevatedButton(
-          //           style: ButtonStyle(
-          //               backgroundColor:
-          //                   MaterialStateProperty.all(Colors.white),
-          //               shape:
-          //                   MaterialStateProperty.all(RoundedRectangleBorder(
-          //                 borderRadius: BorderRadius.circular(30.0),
-          //                 // side: BorderSide(width: 10.0, color: Colors.white),
-          //               ))),
-          //           onPressed: () {},
-          //           child: Column(
-          //             mainAxisAlignment: MainAxisAlignment.center,
-          //             children: [
-          //               // Text('${FirstDate.day + index}'),
-          //               Text(
-          //                 DateFormat('EEEE').format(
-          //                     FirstDate.add(Duration(days: index + 1))),
-          //                 style: TextStyle(color: Colors.black),
-          //               ),
-          //               Text(
-          //                 dateFormat.format(
-          //                     FirstDate.add(Duration(days: index + 1))),
-          //                 style: TextStyle(color: Colors.black, fontSize: 30),
-          //               )
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-
-          // children: List.generate(
-          //     LastDate.day,
-          //     (index) => Padding(
-          //           padding: EdgeInsets.all(8),
-          //           child: Column(mainAxisSize: MainAxisSize.min, children: [
-          //             Text(
-          //               "${index + 1}",
-          //             ),
-          //             () {
-          //               final currentDate =
-          //                   FirstDate.add(Duration(days: index + 1));
-
-          //               final dateName = DateFormat('E').format(currentDate);
-          //               return Text(dateName);
-          //             }()
-          //           ]),
-          //         )),
-
           : SizedBox(
               width: 150,
               child: ElevatedButton(
@@ -349,8 +292,7 @@ class _dateTimepickerState extends State<dateTimepicker> {
                   isChoosen = true;
                   _showDatePicker(context);
                 },
-              ),
-            )
+              )),
     ]);
   }
 }

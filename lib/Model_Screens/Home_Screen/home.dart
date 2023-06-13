@@ -55,7 +55,7 @@ class MyhomeState extends State<Myhome> {
     return Scaffold(
       key: scaffoldKey,
       drawerEnableOpenDragGesture: false,
-      drawer: const Mydrawer(),
+      drawer: Mydrawer(),
       backgroundColor: Colors.white,
       appBar: AppBar(
         //APP BAR

@@ -2,10 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+import 'package:repair_duniya/Model_Screens/Home_Screen/serviceName.dart';
 // import 'package:provider/provider.dart';
 // import 'package:repair_duniya/Model_Screens/Buy_Appliances/buy_appliances.dart';
 // import 'package:repair_duniya/Model_Screens/Home_Screen/drawer.dart';
 import 'package:repair_duniya/Model_Screens/Home_boarding_Screen/home_board.dart';
+import 'package:repair_duniya/Model_Screens/Map_Screen/get_location.dart';
 import 'package:repair_duniya/Model_Screens/Subscription/subscriptionView.dart';
 // import 'package:repair_duniya/SplashView.dart';
 import 'package:repair_duniya/icon_Screen.dart/painter.dart';
@@ -14,8 +17,13 @@ import 'package:repair_duniya/Model_Screens/Map_Screen/location_search_screen.da
 // import 'package:repair_duniya/Model_Screens/Map_Screen/order_tracking_page.dart';
 import 'package:repair_duniya/Model_Screens/Login_All_Screen/otp.dart';
 import 'package:repair_duniya/Model_Screens/Onboarding_Screen/page_indicator.dart';
+import 'package:repair_duniya/pop_Up_Screen/Date_Screen.dart';
+import 'package:repair_duniya/pop_Up_Screen/Describe_Screen.dart';
+import 'package:repair_duniya/pop_Up_Screen/Install_Screen.dart';
+import 'package:repair_duniya/pop_Up_Screen/booking.dart';
 // import 'package:repair_duniya/pop_Up_Screen/Date_Screen.dart';
 // import 'package:repair_duniya/pop_Up_Screen/Describe_Screen.dart';
+import 'Model_Screens/Home_boarding_Screen/user.dart';
 import 'Model_Screens/Onboarding_Screen/data.dart';
 import 'Model_Screens/Home_Screen/home.dart';
 import 'Model_Screens/Login_All_Screen/phone.dart';
@@ -23,25 +31,50 @@ import 'Model_Screens/Login_All_Screen/phone.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MaterialApp(
-    //   ChangeNotifierProvider(
-    //   create: (context) => UserProvider(),
-    //   child: MyApp(),
-    // );
-    initialRoute: '',
-    routes: {
-      'phone': (context) => MyPhone(),
-      'otp': (context) => MyOtp(),
-      'home': (context) => Myhome(),
-      'painter': (context) => MyPainter(),
-      'salon': (context) => MySalon(),
-      'location_search_screen': (context) => SearchLocationScreen(),
-      'home_board': (context) => home_board(),
-      'subscriptionView': (context) => SubscriptionView(),
-    },
-    home: MyApp(),
-    debugShowCheckedModeBanner: false,
-  ));
+  runApp(
+    MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => UserDataProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => dateTime(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => SelectedTime(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => SelectedServiceProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => BookingsProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => DescriptionProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => serviceIdprovider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => Address(),
+          ),
+        ],
+        child: MaterialApp(
+          initialRoute: '',
+          routes: {
+            'phone': (context) => MyPhone(),
+            'otp': (context) => MyOtp(),
+            'home': (context) => Myhome(),
+            'painter': (context) => MyPainter(),
+            'salon': (context) => MySalon(),
+            'location_search_screen': (context) => SearchLocationScreen(),
+            'home_board': (context) => home_board(),
+            'subscriptionView': (context) => SubscriptionView(),
+          },
+          home: home_board(),
+          debugShowCheckedModeBanner: false,
+        )),
+  );
 }
 
 class MyApp extends StatefulWidget {
