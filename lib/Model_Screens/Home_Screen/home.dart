@@ -2,25 +2,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:repair_duniya/Model_Screens/Buy_Appliances/buy_appliances.dart';
 import 'package:repair_duniya/Model_Screens/Control_Devices/deviceinstallView.dart';
-import 'package:repair_duniya/Model_Screens/Map_Screen/location_search_screen.dart';
-import 'package:repair_duniya/models/constant.dart';
+// import 'package:repair_duniya/Model_Screens/Map_Screen/location_search_screen.dart';
+// import 'package:repair_duniya/models/constant.dart';
 
+import '../../Location/locationProvider.dart';
 import '../../Location/locationView.dart';
-import '../../main.dart';
+// import '../../main.dart';
 import '../Wallets/wallet.dart';
 import 'drawer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/gestures.dart';
+// import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:repair_duniya/Model_Screens/Home_Screen/homeIconButton.dart';
+import 'package:provider/provider.dart';
 
 class Myhome extends StatefulWidget {
   final List<String> homeList = ["assets/Offer-1.jpg", "assets/Offer-2.jpg"];
-  // Myhome({super.key, required this.address});
 
-  // final String? address;
-
-  //Myhome(required this.address, {super.key});
   @override
   State<Myhome> createState() => MyhomeState();
 }
@@ -33,6 +31,9 @@ class MyhomeState extends State<Myhome> {
 
   @override
   Widget build(BuildContext context) {
+    var locationProvider = Provider.of<LocationProvider>(context);
+    var pickedLocation = locationProvider.getLocation();
+
     ScreenUtil.init(context);
     final List<Widget> homeSlider = widget.homeList
         .map(
@@ -135,12 +136,12 @@ class MyhomeState extends State<Myhome> {
                     title: Text(
                       //address ?? "Pick Your Location",
                       "Pick Your Location",
-
+    
                       style: TextStyle(
                           fontSize: 20.sp, fontWeight: FontWeight.w600),
                     ),
                     subtitle: Text(
-                      "address",
+                      pickedLocation ?? "Pick Your Location",
                       style: TextStyle(
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w500,
