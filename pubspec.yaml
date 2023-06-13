@@ -60,7 +60,6 @@ dependencies:
   shared_preferences: ^2.1.2
   open_street_map_search_and_pick: ^0.0.17
   uuid: ^3.0.7
-  flutter_keyboard_visibility: ^5.4.1
   confetti: ^0.7.0
 
 dev_dependencies:

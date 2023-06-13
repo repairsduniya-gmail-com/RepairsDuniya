@@ -128,8 +128,10 @@ class _home_boardState extends State<home_board> {
         context,
         MaterialPageRoute(builder: (context) => const SplashView()),
       );
-      
+      signup();
+      // }
     }
+
     final userDataProvider =
         Provider.of<UserDataProvider>(context, listen: false);
 
@@ -197,23 +199,9 @@ class _home_boardState extends State<home_board> {
     //   if (_formKey.currentState!.validate()) {
     //     // final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-    //     void _storeAddressToFirebase(
-    //         String email, String phoneNumber, String username) async {
-    //       try {
-    //         setState(() {
-    //           final docRecord = FirebaseFirestore.instance
-    //               .collection('user')
-    //               .doc(FirebaseAuth.instance.currentUser?.uid);
-    //           docRecord.set({
-    //             'email': email,
-    //             'phone': phoneNumber,
-    //             'username': username,
-    //           });
-    //         });
-    //       } catch (e) {
-    //         print('Error storing address in Firestore: $e');
-    //       }
-    //     }
+    // void _submitForm() {
+    //   if (_formKey.currentState!.validate()) {
+    //     // final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     //     Future<void> storeUserData(
     //         String email, String phoneNumber, String username) async {
@@ -230,6 +218,8 @@ class _home_boardState extends State<home_board> {
     //         // Handle data storage errors
     //       }
     //     }
+    //   }
+    // }
 
     // userProvider.setUserDetails(
     //   emailController.text,

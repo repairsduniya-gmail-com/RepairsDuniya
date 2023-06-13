@@ -126,7 +126,6 @@ class MyhomeState extends State<Myhome> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
- developferaj
                             builder: (context) => const LocationView()));
                   },
                   icon: SvgPicture.asset(
