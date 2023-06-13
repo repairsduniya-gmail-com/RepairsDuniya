@@ -2,32 +2,38 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:repair_duniya/Model_Screens/Buy_Appliances/buy_appliances.dart';
 import 'package:repair_duniya/Model_Screens/Control_Devices/deviceinstallView.dart';
-import 'package:repair_duniya/Model_Screens/Map_Screen/location_search_screen.dart';
-import 'package:repair_duniya/models/constant.dart';
+// import 'package:repair_duniya/Model_Screens/Map_Screen/location_search_screen.dart';
+// import 'package:repair_duniya/models/constant.dart';
 
-import '../../main.dart';
+import '../../Location/locationProvider.dart';
+import '../../Location/locationView.dart';
+// import '../../main.dart';
 import '../Wallets/wallet.dart';
 import 'drawer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/gestures.dart';
+// import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:repair_duniya/Model_Screens/Home_Screen/homeIconButton.dart';
+import 'package:provider/provider.dart';
 
 class Myhome extends StatefulWidget {
   final List<String> homeList = ["assets/Offer-1.jpg", "assets/Offer-2.jpg"];
-  Myhome({super.key});
 
   @override
-  State<Myhome> createState() => _homeState();
+  State<Myhome> createState() => MyhomeState();
 }
 
-class _homeState extends State<Myhome> {
+class MyhomeState extends State<Myhome> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int _current = 0;
   final List<Map<String, dynamic>> _allUsers =
       []; //here we will put our search items,
+
   @override
   Widget build(BuildContext context) {
+    var locationProvider = Provider.of<LocationProvider>(context);
+    var pickedLocation = locationProvider.getLocation();
+
     ScreenUtil.init(context);
     final List<Widget> homeSlider = widget.homeList
         .map(
@@ -45,6 +51,7 @@ class _homeState extends State<Myhome> {
           ),
         )
         .toList();
+
     return Scaffold(
       key: scaffoldKey,
       drawerEnableOpenDragGesture: false,
@@ -52,6 +59,7 @@ class _homeState extends State<Myhome> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         //APP BAR
+        //centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
           "Home",
@@ -97,7 +105,7 @@ class _homeState extends State<Myhome> {
                   onPressed: () {},
                   icon: Icon(
                     Icons.notifications,
-                    color: Colors.yellow.shade800,
+                    color: Colors.orange.shade600,
                   )),
             ],
           )
@@ -118,46 +126,29 @@ class _homeState extends State<Myhome> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                const SearchLocationScreen()));
+ developferaj
+                            builder: (context) => const LocationView()));
                   },
                   icon: SvgPicture.asset(
                     "assets/location-pin1-com.svg",
-                    height: 30.h,
+                    height: 25.h,
                   ),
                   label: ListTile(
                     title: Text(
-                      "Location",
+                      //address ?? "Pick Your Location",
+                      "Pick Your Location",
+    
                       style: TextStyle(
-                          fontSize: 20.sp, fontWeight: FontWeight.bold),
+                          fontSize: 20.sp, fontWeight: FontWeight.w600),
                     ),
                     subtitle: Text(
-                      "Kormangala",
+                      pickedLocation ?? "Pick Your Location",
                       style: TextStyle(
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w500,
                           color: Colors.grey),
                     ),
                   ),
-                  // label: Column(
-                  //   children: [
-                  //     Text(
-                  //       "Location",
-                  //       style: TextStyle(
-                  //           fontSize: 20, fontWeight: FontWeight.bold),
-                  //     ),
-                  //     Padding(
-                  //       padding: EdgeInsets.only(left: 15),
-                  //       child: Text(
-                  //         "Kormangala",
-                  //         style: TextStyle(
-                  //             fontSize: 13,
-                  //             fontWeight: FontWeight.w500,
-                  //             color: Colors.grey),
-                  //       ),
-                  //     )
-                  //   ],
-                  // ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
