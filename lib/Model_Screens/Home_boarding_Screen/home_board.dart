@@ -87,36 +87,37 @@ class home_board extends StatelessWidget {
     // final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     void _submitForm() {
-      if (_formKey.currentState!.validate()) {
-        // final userProvider = Provider.of<UserProvider>(context, listen: false);
+      // if (_formKey.currentState!.validate()) {
 
-        Future<void> storeUserData(
-            String email, String phoneNumber, String username) async {
-          try {
-            CollectionReference users =
-                FirebaseFirestore.instance.collection('users');
-            await users.add({
-              'email': email,
-              'phone': phoneNumber,
-              'username': username,
-            });
-            // User data stored successfully
-          } catch (e) {
-            // Handle data storage errors
-          }
+      // final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+      Future<void> storeUserData(
+          String email, String phoneNumber, String username) async {
+        try {
+          CollectionReference users =
+              FirebaseFirestore.instance.collection('users');
+          await users.add({
+            'email': email,
+            'phone': phoneNumber,
+            'username': username,
+          });
+          // User data stored successfully
+        } catch (e) {
+          // Handle data storage errors
         }
-
-        // userProvider.setUserDetails(
-        //   emailController.text,
-        //   usernameController.text,
-        //   phoneNumberController.text,
-        // );
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const SplashView()),
-        );
-        signup();
       }
+
+      // userProvider.setUserDetails(
+      //   emailController.text,
+      //   usernameController.text,
+      //   phoneNumberController.text,
+      // );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SplashView()),
+      );
+      signup();
+      // }
     }
     // void _handleSubmitted() {
     //   final String username = usernameController.text.trim();
