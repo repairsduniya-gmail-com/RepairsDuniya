@@ -1,14 +1,25 @@
 // import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-// import 'package:geolocator/geolocator.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'dart:math';
+import 'dart:math';
 // import 'package:repair_duniya/pop_Up_Screen/confirm_booking.dart';
-// import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoding/geocoding.dart';
-// import 'package:repair_duniya/Model_Screens/Home_Screen/home.dart';
+import 'package:repair_duniya/Model_Screens/Home_Screen/home.dart';
+import 'package:provider/provider.dart';
+import 'package:repair_duniya/Model_Screens/Home_Screen/serviceName.dart';
+import 'package:repair_duniya/Model_Screens/Home_boarding_Screen/user.dart';
+import 'package:repair_duniya/Model_Screens/Map_Screen/get_location.dart';
+import 'package:repair_duniya/pop_Up_Screen/Date_Screen.dart';
+import 'package:repair_duniya/pop_Up_Screen/Describe_Screen.dart';
+import 'package:repair_duniya/pop_Up_Screen/bookingConfirmation.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../pop_Up_Screen/Install_Screen.dart';
+import '../../pop_Up_Screen/booking.dart';
 
 Future<Position> getCurrentLocation() async {
   bool serviceEnabled;
@@ -56,8 +67,97 @@ Future<String?> getCityNameFromCoordinates(
 
 class DeliveryStatusScreen extends StatelessWidget {
   bool isDeliveryPossible = false;
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    final bookingsProvider =
+        Provider.of<BookingsProvider>(context, listen: false);
+    void createBooking() {
+      final selectedserviceNameProvider =
+          Provider.of<serviceIdprovider>(context, listen: false);
+      final service = selectedserviceNameProvider.UserselectedService;
+
+      final selectedServiceProvider =
+          Provider.of<SelectedServiceProvider>(context, listen: false);
+      final selectedService = selectedServiceProvider.selectedService;
+
+      final descriptionProvider =
+          Provider.of<DescriptionProvider>(context, listen: false);
+      final Description = descriptionProvider.description;
+
+      final selectedTimeProvider =
+          Provider.of<SelectedTime>(context, listen: false);
+      final selectedtime = selectedTimeProvider.selectedValue;
+
+      final dateProvider = Provider.of<dateTime>(context, listen: false);
+      final selectedDate = dateProvider.userSelectedDate;
+
+      final userDataprovider =
+          Provider.of<UserDataProvider>(context, listen: false);
+
+      final housenumberProvider = Provider.of<Address>(context, listen: false);
+      final HouseNumber = housenumberProvider.houseNumber;
+      final address = housenumberProvider.address;
+      final housename = housenumberProvider.houseName;
+      if (selectedService == null) {
+        // No service selected, handle the error
+        return;
+      }
+
+      // Retrieve the corresponding serviceName based on the selected service
+      String serviceName;
+      String description;
+      if (selectedService == 'installation') {
+        serviceName = 'Installation';
+        description = 'null';
+      } else if (selectedService == 'repair') {
+        serviceName = 'Repair';
+        description = Description;
+      } else {
+        // Handle other cases if needed
+        return;
+      }
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      Future<int> getRowCount() async {
+        QuerySnapshot snapshot = await firestore.collection('bookings').get();
+        int rowCount = snapshot.size;
+        return rowCount;
+      }
+
+      // Future<String> generateBookingId() async {
+      //   final date = selectedDate!.day;
+      //   final year = selectedDate.year;
+      //   final uuid = Uuid();
+      //   // final rowCount = getRowCount().then((rowCount) {}).toString();
+      //   String bookinId;
+      //   bookinId = '${date}RD${year}${uuid}';
+      //   return bookinId;
+      // }
+      String generateBookingId() {
+        final uuid = Uuid();
+        return uuid.v4(); // Generate a version 4 (random) UUID
+      }
+
+      // Create a new Booking object with the form data
+      final booking = Booking(
+          description: Description,
+          service: service,
+          serviceName: selectedService,
+          date: selectedDate,
+          time: selectedtime,
+          bookingId: generateBookingId().toString(),
+          houseNumber: HouseNumber,
+          Address: address,
+          houseName: housename,
+          phoneNumber: userDataprovider.userData?.phoneNumber,
+          username: userDataprovider.userData?.username,
+          CreatedDate: DateTime.now());
+
+      // Add the booking to the BookingsProvider
+      bookingsProvider.addBooking(booking, 'username');
+    }
+
     return FutureBuilder<Position>(
       future: getCurrentLocation(),
       builder: (context, snapshot) {
@@ -106,37 +206,21 @@ class DeliveryStatusScreen extends StatelessWidget {
                       if (isDeliveryPossible) {
                         // Delivery is possible, allow the user to proceed
                         return Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Navigate to the next screen or perform desired action
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Done'),
-                                    content: Text('Your booking has been done'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: Text('OK'),
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pop(); // Close the dialog
-                                        },
-                                      ),
-                                      // TextButton(
-                                      //   child: Text('No'),
-                                      //   onPressed: () {
-                                      //     Navigator.of(context)
-                                      //         .pop(); // Close the dialog
-                                      //   },
-                                      // ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            child: Text('Confirm Booking'),
+                          padding: const EdgeInsets.all(0.0),
+                          child: Container(
+                            width: 200,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                createBooking();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookingConfirmation(),
+                                  ),
+                                );
+                              },
+                              child: Text('Confirm Booking'),
+                            ),
                           ),
                         );
                       } else {
