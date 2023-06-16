@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:repair_duniya/icon_Screen.dart/screen_widgets.dart';
 
 import '../homeIconButton.dart';
+import '../serviceName.dart';
 
 class allServices extends StatefulWidget {
   const allServices({super.key});
@@ -22,6 +24,8 @@ class _allServicesState extends State<allServices> {
   }
 
   Widget listtile(String Name, String img, img1, img2) {
+    final serviceProvider =
+        Provider.of<serviceIdprovider>(context, listen: false);
     return Column(
       children: [
         Material(

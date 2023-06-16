@@ -1,5 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:repair_duniya/pop_Up_Screen/Date_Screen.dart';
+
+class DescriptionProvider with ChangeNotifier {
+  String _description = '';
+
+  String get description => _description;
+
+  void setDescription(String value) {
+    _description = value;
+    notifyListeners();
+  }
+}
 
 class modalBottomSheet extends StatefulWidget {
   const modalBottomSheet({super.key});
@@ -44,6 +56,7 @@ class _modalBottomSheetState extends State<modalBottomSheet>
   }
 
   Widget Describe_sheet(BuildContext context) {
+    final descriptionProvider = Provider.of<DescriptionProvider>(context);
     final TextEditingController _Textcontroller = TextEditingController();
     return Container(
       decoration: BoxDecoration(
@@ -99,13 +112,16 @@ class _modalBottomSheetState extends State<modalBottomSheet>
                 height: 200,
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: TextFormField(
+                  onChanged: (value) {
+                    descriptionProvider.setDescription(value);
+                  },
                   minLines: 8,
                   maxLines: 200,
                   controller: _Textcontroller,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
                     hintMaxLines: 2,
-                    hintText: 'My Air Conditioner is not working...',
+                    hintText: 'Describe the faults in your device...',
                     hintStyle: TextStyle(
                       color: Colors.black54,
                       fontSize: 17,

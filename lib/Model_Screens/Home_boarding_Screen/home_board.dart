@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:repair_duniya/Model_Screens/Home_Screen/home.dart';
 import 'package:repair_duniya/Model_Screens/Home_boarding_Screen/auth.dart';
+import 'package:repair_duniya/Model_Screens/Home_boarding_Screen/user.dart';
 import 'package:repair_duniya/Model_Screens/Login_All_Screen/otp.dart';
 import 'package:repair_duniya/SplashView.dart';
 import 'package:provider/provider.dart';
@@ -12,16 +14,28 @@ import 'package:firebase_database/firebase_database.dart';
 enum AuthMode { Signup, Login }
 
 // ignore: must_be_immutable
-class home_board extends StatelessWidget {
+class home_board extends StatefulWidget {
   home_board({super.key});
 
+  @override
+  State<home_board> createState() => _home_boardState();
+}
+
+class _home_boardState extends State<home_board> {
   FocusNode emailFocusnode = FocusNode();
+
   FocusNode usernameFocusnode = FocusNode();
+
   FocusNode mobileFocusnode = FocusNode();
+
   FocusNode buttonFocusnode = FocusNode();
+
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController usernameController = TextEditingController();
+
   final TextEditingController phoneNumberController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -78,44 +92,148 @@ class home_board extends StatelessWidget {
         // Proceed with OTP verification
         // ...
       } catch (error) {
-        print('Signup error: $error');
+        //print('Signup error: $error');
         // Handle signup error
       }
     }
     // final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     void _submitForm() {
-      if (_formKey.currentState!.validate()) {
-        // final userProvider = Provider.of<UserProvider>(context, listen: false);
+      // if (_formKey.currentState!.validate()) {
 
-        Future<void> storeUserData(
-            String email, String phoneNumber, String username) async {
-          try {
-            CollectionReference users =
-                FirebaseFirestore.instance.collection('users');
-            await users.add({
-              'email': email,
-              'phone': phoneNumber,
-              'username': username,
-            });
-            // User data stored successfully
-          } catch (e) {
-            // Handle data storage errors
-          }
+      // final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+      Future<void> storeUserData(
+          String email, String phoneNumber, String username) async {
+        try {
+          CollectionReference users =
+              FirebaseFirestore.instance.collection('users');
+          await users.add({
+            'email': email,
+            'phone': phoneNumber,
+            'username': username,
+          });
+          // User data stored successfully
+        } catch (e) {
+          // Handle data storage errors
         }
-
-        // userProvider.setUserDetails(
-        //   emailController.text,
-        //   usernameController.text,
-        //   phoneNumberController.text,
-        // );
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MyOtp()),
-        );
-        signup();
       }
+
+      // userProvider.setUserDetails(
+      //   emailController.text,
+      //   usernameController.text,
+      //   phoneNumberController.text,
+      // );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SplashView()),
+      );
+      signup();
+      // }
     }
+
+    final userDataProvider =
+        Provider.of<UserDataProvider>(context, listen: false);
+
+    // String generateRandomPassword({int length = 8}) {
+    //   const String chars =
+    //       'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    //   const String Specialchar = '@#\$%*';
+    //   final random = Random();
+    //   String password = '';
+
+    //   for (int i = 0; i < length; i++) {
+    //     password += chars[random.nextInt(chars.length)];
+    //     password += chars[random.nextInt(Specialchar.length)];
+    //   }
+
+    //   return password;
+    // }
+
+    // String generateOTP() {
+    //   Random random = Random();
+    //   int otp = random.nextInt(900000) + 100000;
+    //   return otp.toString();
+    // }
+
+    // Future<void> signup() async {
+    //   final email = emailController.text;
+    //   final username = usernameController.text;
+    //   final phoneNumber = phoneNumberController.text;
+
+    //   try {
+    //     // Create a new user with email and password
+    //     final UserCredential userCredential =
+    //         await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    //       email: email,
+    //       password:
+    //           generateRandomPassword(), // Replace with your logic to generate a password
+    //     );
+
+    //     // Get the generated user ID
+    //     final userId = userCredential.user!.uid;
+
+    //     // Save user details to Firebase Realtime Database
+    //     final DatabaseReference userRef =
+    //         FirebaseDatabase.instance.reference().child('users/$userId');
+    //     userRef.set({
+    //       'email': email,
+    //       'username': username,
+    //       'phoneNumber': phoneNumber,
+    //     });
+
+    //     // // Generate and send OTP
+    //     // final otp = generateOTP(); // Replace with your logic to generate an OTP
+    //     // await sendOTP(phoneNumber, otp); // Replace with your logic to send OTP using an SMS gateway
+
+    //     // Proceed with OTP verification
+    //     // ...
+    //   } catch (error) {
+    //     print('Signup error: $error');
+    //     // Handle signup error
+    //   }
+    // }
+    // // final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    // void _submitForm() {
+    //   if (_formKey.currentState!.validate()) {
+    //     // final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    // void _submitForm() {
+    //   if (_formKey.currentState!.validate()) {
+    //     // final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    //     Future<void> storeUserData(
+    //         String email, String phoneNumber, String username) async {
+    //       try {
+    //         CollectionReference users =
+    //             FirebaseFirestore.instance.collection('users');
+    //         await users.add({
+    //           'email': email,
+    //           'phone': phoneNumber,
+    //           'username': username,
+    //         });
+    //         // User data stored successfully
+    //       } catch (e) {
+    //         // Handle data storage errors
+    //       }
+    //     }
+    //   }
+    // }
+
+    // userProvider.setUserDetails(
+    //   emailController.text,
+    //   usernameController.text,
+    //   phoneNumberController.text,
+    // );
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(builder: (context) => MyOtp()),
+    //     );
+    //     signup();
+    //   }
+    // }
+
     // void _handleSubmitted() {
     //   final String username = usernameController.text.trim();
     //   final String email = emailController.text.trim();
@@ -300,7 +418,44 @@ class home_board extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50)),
                                   backgroundColor: Colors.blue[200]),
-                              onPressed: _submitForm,
+                              onPressed: () {
+                                final email =
+                                    emailController.text; // Get email value
+                                final username = usernameController
+                                    .text; // Get username value
+                                final phoneNumber = phoneNumberController
+                                    .text; // Get phone number value
+
+                                // Call the function to store user data using the provider
+                                userDataProvider.storeUserData(
+                                    email, username, phoneNumber);
+
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Myhome()));
+                              },
+                              //   void _storeAddressToFirebase(String email,
+                              //       String phoneNumber, String username) async {
+                              //     try {
+                              //       setState(() {
+                              //         final docRecord = FirebaseFirestore
+                              //             .instance
+                              //             .collection('user')
+                              //             .doc(FirebaseAuth
+                              //                 .instance.currentUser?.uid);
+                              //         docRecord.set({
+                              //           'email': email,
+                              //           'phone': phoneNumber,
+                              //           'username': username,
+                              //         });
+                              //       });
+                              //     } catch (e) {
+                              //       print(
+                              //           'Error storing address in Firestore: $e');
+                              //     }
+                              //   }
+                              // },
                               child: Text(
                                 "Get Started",
                                 style: TextStyle(

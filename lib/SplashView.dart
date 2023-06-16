@@ -24,54 +24,43 @@ class SplashView_state extends State<SplashView> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue[50],
       body: Stack(
         children: [
-          Center(
-            child: AnimatedPositioned(
+          AnimatedPositioned(
+            duration: const Duration(seconds: 2),
+            // bottom: animate ? 350 : 0,
+            left: 75,
+            top: 250,
+            child: AnimatedOpacity(
               duration: const Duration(seconds: 2),
-              bottom: animate ? 350 : 0,
-              left: 90,
-              top: 80,
-              child: AnimatedOpacity(
-                duration: const Duration(seconds: 2),
-                opacity: animate ? 1 : 0,
-                child: Container(
-                  height: 200.h,
-                  width: 200.w,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      //color: Colors.amber,
-                      image: DecorationImage(
-                          image: AssetImage("assets/logo sqaure.png"),
-                          fit: BoxFit.fill),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(-4, -4),
-                          blurRadius: 15,
-                          spreadRadius: 1,
-                        ),
-                        BoxShadow(
-                          color: Colors.grey, // color of the shadow
-                          offset: Offset(4, 4),
-                          blurRadius: 15,
-                          spreadRadius: 1, // how far the color effect spreads.
-                        ),
-                      ]),
-                ),
+              opacity: animate ? 1 : 0,
+              child: Container(
+                height: 200.h,
+                width: 200.w,
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    //color: Colors.amber,
+                    image: DecorationImage(
+                        image: AssetImage("assets/logo sqaure.png"),
+                        fit: BoxFit.fill),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        offset: Offset(-4, -4),
+                        blurRadius: 15,
+                        spreadRadius: 1,
+                      ),
+                      BoxShadow(
+                        color: Colors.grey, // color of the shadow
+                        offset: Offset(4, 4),
+                        blurRadius: 15,
+                        spreadRadius: 1, // how far the color effect spreads.
+                      ),
+                    ]),
               ),
             ),
           ),
-          // Positioned(
-          //   top: 465,
-          //   left: 80,
-          //   child: Text("Get Technician At\n   Your Door Step.",
-          //       style: TextStyle(
-          //           fontSize: 25.sp,
-          //           fontWeight: FontWeight.bold,
-          //           color: Colors.black)),
-          // ),
         ],
       ),
     );

@@ -1,12 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+// import 'package:flutter/src/widgets/container.dart';
+// import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:repair_duniya/Model_Screens/Login_All_Screen/otp.dart';
-import 'package:repair_duniya/Model_Screens/Login_All_Screen/phone.dart';
+// import 'package:repair_duniya/Model_Screens/Login_All_Screen/phone.dart';
 
 class MyPhone extends StatefulWidget {
   final List<String> imgList = ["assets/login-2.jpg", "assets/login-3.jpg"];
@@ -156,7 +157,8 @@ class _MyPhoneState extends State<MyPhone> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (builder) => MyOtp()));
                 },
-                //  async {
+
+                //     async {
                 //   await FirebaseAuth.instance.verifyPhoneNumber(
                 //     phoneNumber: '${_countryCode.text + phone}',
                 //     verificationCompleted: (PhoneAuthCredential credential) {},
@@ -169,15 +171,15 @@ class _MyPhoneState extends State<MyPhone> {
                 //     codeAutoRetrievalTimeout: (String verificationId) {},
                 //   );
                 // },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10))),
                 child: Text('Send the code',
                     style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w500,
                         color: Colors.white)),
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10))),
               ),
             ),
           ]),

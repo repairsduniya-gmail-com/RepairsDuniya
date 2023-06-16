@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 import 'package:repair_duniya/Model_Screens/Map_Screen/location_service.dart';
 import 'package:repair_duniya/components.dart/location_list_tile.dart';
 import 'package:repair_duniya/components.dart/network_utility.dart';
@@ -19,6 +20,29 @@ import 'package:repair_duniya/models/place_auto_complate_response.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:repair_duniya/pop_Up_Screen/address.dart';
+
+class Address with ChangeNotifier {
+  String? address;
+  String? houseNumber;
+  String? houseName;
+
+  void sethouseNumber(String _houseNumber) {
+    houseNumber = _houseNumber;
+    notifyListeners();
+  }
+
+  void sethouseName(String _houseName) {
+    houseName = _houseName;
+    notifyListeners();
+  }
+
+  void setAddress(String? _address) {
+    address = _address;
+    notifyListeners();
+  }
+
+  // ... other methods and functionalities of your provider class
+}
 
 class SearchlocationScreen extends StatefulWidget {
   // final DeliveryStatusScreen widgetA;
@@ -36,14 +60,14 @@ class _SearchlocationScreenState extends State<SearchlocationScreen> {
 
   void _storeAddressToFirebase(String address) async {
     try {
-      setState(() {
-        final docRecord = FirebaseFirestore.instance
-            .collection('users')
-            .doc(FirebaseAuth.instance.currentUser?.uid);
-        docRecord.set({
-          'address': _currentAddress,
-        });
-      });
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final userRef =
+            FirebaseFirestore.instance.collection('users').doc(user.uid);
+        await userRef.set({
+          'address': address,
+        }, SetOptions(merge: true));
+      }
     } catch (e) {
       print('Error storing address in Firestore: $e');
     }
@@ -73,6 +97,8 @@ class _SearchlocationScreenState extends State<SearchlocationScreen> {
         setState(() {
           _currentAddress =
               '${place.subLocality},${place.locality}, ${place.postalCode},${place.administrativeArea}';
+          final addressProvider = Provider.of<Address>(context, listen: false);
+          addressProvider.setAddress(_currentAddress!);
         });
         _storeAddressToFirebase(_currentAddress!);
       } else {
@@ -112,45 +138,25 @@ class _SearchlocationScreenState extends State<SearchlocationScreen> {
   // bool get _isDeliveryPossible => isDeliveryPossible;
   @override
   Widget build(BuildContext context) {
-    // DeliveryStatusScreen widgetB =
-    //     DeliveryStatusScreen(_isDeliveryPossible: isDeliveryPossible);
-    // bool isDeliveyPossible = widget.widgetA.isDeliveryPossible;
+    final addressProvider = Provider.of<Address>(context, listen: false);
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.white,
-      //   elevation: 0.0,
-      //   leading: Padding(
-      //     padding: const EdgeInsets.only(left: defaultPadding),
-      //     child: CircleAvatar(
-      //       backgroundColor: secondaryColor10LightTheme,
-      //       child: SvgPicture.asset(
-      //         "assets/location.svg",
-      //         height: 20.h,
-      //         width: 5.w,
-      //         color: secondaryColor40LightTheme,
-      //         fit: BoxFit.fill,
-      //       ),
-      //     ),
-      //   ),
-      //   title: const Text(
-      //     "Set Delivery Location",
-      //     style: TextStyle(color: textColorLightTheme),
-      //   ),
-      //   actions: [
-      //     CircleAvatar(
-      //       backgroundColor: secondaryColor10LightTheme,
-      //       child: IconButton(
-      //         onPressed: () {
-      //           Navigator.pop(context);
-      //         },
-      //         icon: const Icon(Icons.close, color: Colors.black),
-      //       ),
-      //     ),
-      //     const SizedBox(width: defaultPadding)
-      //   ],
-      // ),
       body: Column(
         children: [
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: TextField(
+              onChanged: (value) => addressProvider.sethouseNumber(value),
+              decoration:
+                  InputDecoration(labelText: 'House Number/Flat Number,Floor'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: (value) => addressProvider.sethouseName(value),
+              decoration: InputDecoration(labelText: 'Appartment Name'),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(defaultPadding),
             child: SizedBox(
@@ -158,6 +164,8 @@ class _SearchlocationScreenState extends State<SearchlocationScreen> {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () async {
+                  addressProvider.setAddress(_currentAddress);
+
                   // PlaceAutocomplate('Dubai');
                   setState(() {
                     isLoading1 = true;
@@ -165,6 +173,7 @@ class _SearchlocationScreenState extends State<SearchlocationScreen> {
                   _currentPosition = await _getPosition();
                   _getAddress(
                       _currentPosition!.latitude, _currentPosition!.longitude);
+                  // addressProvider.setAddress(_currentAddress);
                   setState(() {
                     isLoading1 = false;
                   });
@@ -201,10 +210,8 @@ class _SearchlocationScreenState extends State<SearchlocationScreen> {
                         ),
                         DeliveryStatusScreen()
                       ]))
-                  : Divider(
-                      height: 4,
-                      thickness: 3,
-                      // color: Colors.grey.shade300,
+                  : SizedBox(
+                      height: 0,
                     ),
           Expanded(
             child: ListView.builder(
