@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:repair_duniya/Location/locationView.dart';
 import 'package:repair_duniya/Model_Screens/Home_Screen/serviceName.dart';
 // import 'package:provider/provider.dart';
 // import 'package:repair_duniya/Model_Screens/Buy_Appliances/buy_appliances.dart';
@@ -23,6 +24,7 @@ import 'package:repair_duniya/pop_Up_Screen/Install_Screen.dart';
 import 'package:repair_duniya/pop_Up_Screen/booking.dart';
 // import 'package:repair_duniya/pop_Up_Screen/Date_Screen.dart';
 // import 'package:repair_duniya/pop_Up_Screen/Describe_Screen.dart';
+import 'Location/locationProvider.dart';
 import 'Model_Screens/Home_boarding_Screen/user.dart';
 import 'Model_Screens/Onboarding_Screen/data.dart';
 import 'Model_Screens/Home_Screen/home.dart';
@@ -34,6 +36,9 @@ void main() async {
   runApp(
     MultiProvider(
         providers: [
+          ChangeNotifierProvider(
+            create: (context) => LocationProvider(),
+          ),
           ChangeNotifierProvider(
             create: (context) => UserDataProvider(),
           ),
@@ -62,16 +67,17 @@ void main() async {
         child: MaterialApp(
           initialRoute: '',
           routes: {
+            'location': (context) => const LocationView(),
             'phone': (context) => MyPhone(),
             'otp': (context) => MyOtp(),
             'home': (context) => Myhome(),
             'painter': (context) => MyPainter(),
             'salon': (context) => MySalon(),
-            'location_search_screen': (context) => SearchLocationScreen(),
+            //'location_search_screen': (context) => SearchLocationScreen(),
             'home_board': (context) => home_board(),
-            'subscriptionView': (context) => SubscriptionView(),
+            'subscriptionView': (context) => const SubscriptionView(),
           },
-          home: home_board(),
+          home: MyApp(),
           debugShowCheckedModeBanner: false,
         )),
   );
