@@ -433,7 +433,8 @@ class _home_boardState extends State<home_board> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Myhome()));
+                                        builder: (context) =>
+                                            const SplashView()));
                               },
                               //   void _storeAddressToFirebase(String email,
                               //       String phoneNumber, String username) async {

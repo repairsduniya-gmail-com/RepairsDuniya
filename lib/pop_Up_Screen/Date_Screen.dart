@@ -130,7 +130,7 @@ class _DateBottomSheetState extends State<DateBottomSheet>
               ],
             ),
           ),
-          Padding(padding: const EdgeInsets.all(8.0), child: dateTimepicker()
+         const  Padding(padding:  EdgeInsets.all(8.0), child: dateTimepicker()
               // ElevatedButton(
               //   style: ElevatedButton.styleFrom(
               //     minimumSize: Size.fromHeight(40),
@@ -152,11 +152,11 @@ class _DateBottomSheetState extends State<DateBottomSheet>
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Select Timing",
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
                 ),
-                Container(
+                SizedBox(
                   height: 70,
                   child: Image.asset(
                       'assets/alarm-clock-concept-illustration_114360-14276-removebg-preview.png'),
