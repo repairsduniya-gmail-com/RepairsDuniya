@@ -5,6 +5,20 @@ import 'package:repair_duniya/Model_Screens/Map_Screen/location_service.dart';
 import 'package:repair_duniya/pop_Up_Screen/address.dart';
 import 'package:intl/intl.dart';
 
+showCustomModalBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+      top: Radius.circular(35),
+    )),
+    clipBehavior: Clip.antiAliasWithSaveLayer,
+    builder: (BuildContext context) {
+      return DateBottomSheet();
+    },
+  );
+}
+
 class DateBottomSheet extends StatefulWidget {
   const DateBottomSheet({super.key});
 
@@ -240,59 +254,59 @@ class dateTimepicker extends StatefulWidget {
 
 class _dateTimepickerState extends State<dateTimepicker> {
   DateTime _selectedDate = DateTime.now();
-  DateFormat dateFormat = DateFormat(' dd-MM-yyyy');
-  DateTime FirstDate = DateTime.now().add(Duration(days: -1));
-  DateTime LastDate = DateTime.now().add(Duration(days: 2));
-  bool isChoosen = false;
-  // DateTime SelectedDate = dateFormat.format(FirstDate);
+  DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+  DateTime firstDate = DateTime.now().add(Duration(days: -1));
+  DateTime lastDate = DateTime.now().add(Duration(days: 2));
+  bool isChosen = false;
 
   void _showDatePicker(BuildContext context) async {
     final datePickerProvider = Provider.of<dateTime>(context, listen: false);
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime.now(),
-            lastDate: DateTime.now().add(Duration(days: 2)))
-        .then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      setState(() {
-        _selectedDate = pickedDate;
-        datePickerProvider.setSelectedDate(pickedDate);
-        // DateTime(pickedDate.day, pickedDate.month, pickedDate.year);
-      });
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 2)),
+    );
+
+    if (pickedDate == null) {
+      return;
+    }
+
+    datePickerProvider.setSelectedDate(pickedDate);
+    setState(() {
+      _selectedDate = pickedDate;
+      isChosen = true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisSize: MainAxisSize.min, children: [
-      _selectedDate == null
-          ? Text(
-              // DateFormat.yMd().format(_selectedDate),
-
-              'No date Choosen',
-              // : dateFormat.format(_selectedDate),
-              style: TextStyle(fontSize: 20, color: Colors.black),
-            )
-          : SizedBox(
-              width: 150,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  minimumSize: const Size.fromHeight(40),
-                  primary: Colors.grey.shade300,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _selectedDate == null
+            ? Text(
+                'No date chosen',
+                style: TextStyle(fontSize: 20, color: Colors.black),
+              )
+            : SizedBox(
+                width: 150,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    minimumSize: const Size.fromHeight(40),
+                    primary: Colors.grey.shade300,
+                  ),
+                  child: Text(
+                    isChosen ? dateFormat.format(_selectedDate) : 'Choose date',
+                    style: const TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                  onPressed: () {
+                    _showDatePicker(context);
+                  },
                 ),
-                child: Text(
-                  isChoosen ? dateFormat.format(_selectedDate) : 'choose date',
-                  style: const TextStyle(fontSize: 20, color: Colors.white),
-                ),
-                onPressed: () {
-                  isChoosen = true;
-                  _showDatePicker(context);
-                },
-              )),
-    ]);
+              ),
+      ],
+    );
   }
 }

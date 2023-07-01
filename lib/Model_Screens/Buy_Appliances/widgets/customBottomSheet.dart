@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// import 'package:repair_duniya/Model_Screens/Buy_Appliances/providers/all_providers.dart';
 
 class custom_Bottom_Sheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    //  final cartProvider = Provider.of<CartProvider>(context, listen: false);
     return Container(
       padding: EdgeInsets.only(left: 20, right: 20, bottom: 30),
       decoration: BoxDecoration(
@@ -88,7 +90,9 @@ class custom_Bottom_Sheet extends StatelessWidget {
             height: 30,
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              //  cartProvider.addItem(product);
+            },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 100),
               decoration: BoxDecoration(

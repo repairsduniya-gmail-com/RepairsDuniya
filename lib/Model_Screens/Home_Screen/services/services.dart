@@ -19,7 +19,7 @@ class _servicesState extends State<services> {
         ));
   }
 
-  Widget listtile(String Name, String img, img1, img2) {
+  Widget listtile(String Name, String img, img1, img2, List<String> values) {
     return Column(
       children: [
         Material(
@@ -38,11 +38,12 @@ class _servicesState extends State<services> {
             ),
             child: InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Icons_widget(img1, img2, Name)),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) =>
+                //           Icons_widget(img1, img2, Name, values)),
+                // );
               },
             ),
           ),
@@ -58,7 +59,7 @@ class _servicesState extends State<services> {
     );
   }
 
-  Widget listtile2(String Name, String img, img1, img2) {
+  Widget listtile2(String Name, String img, img1, img2, List<String> values) {
     return Stack(
       children: [
         Column(
@@ -79,11 +80,12 @@ class _servicesState extends State<services> {
                 ),
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Icons_widget(img1, img2, Name)),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) =>
+                    //           Icons_widget(img1, img2, Name, values)),
+                    // );
                   },
                 ),
               ),
@@ -121,36 +123,16 @@ class _servicesState extends State<services> {
               gridDelegate:
                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
               children: [
-                listtile(
-                  'Unisex Salon & Spa',
-                  'assets/salon.png',
-                  "screen_assets/tv2.jpg",
-                  "screen_assets/tv3.jpg",
-                ),
-                listtile(
-                  'Electrician',
-                  'screen_assets/electrician.png',
-                  "screen_assets/tv2.jpg",
-                  "screen_assets/tv3.jpg",
-                ),
-                listtile(
-                  'Plumber',
-                  'screen_assets/plumber.png',
-                  "screen_assets/tv2.jpg",
-                  "screen_assets/tv3.jpg",
-                ),
-                listtile(
-                  'Painting',
-                  'assets/paint.png',
-                  "screen_assets/tv2.jpg",
-                  "screen_assets/tv3.jpg",
-                ),
-                listtile2(
-                  'Cleaning',
-                  'assets/cleaning.png',
-                  "screen_assets/tv2.jpg",
-                  "screen_assets/tv3.jpg",
-                )
+                listtile('Unisex Salon & Spa', 'assets/salon.png',
+                    "screen_assets/tv2.jpg", "screen_assets/tv3.jpg", ['']),
+                listtile('Electrician', 'screen_assets/electrician.png',
+                    "screen_assets/tv2.jpg", "screen_assets/tv3.jpg", ['']),
+                listtile('Plumber', 'screen_assets/plumber.png',
+                    "screen_assets/tv2.jpg", "screen_assets/tv3.jpg", ['']),
+                listtile('Painting', 'assets/paint.png',
+                    "screen_assets/tv2.jpg", "screen_assets/tv3.jpg", ['']),
+                listtile2('Cleaning', 'assets/cleaning.png',
+                    "screen_assets/tv2.jpg", "screen_assets/tv3.jpg", [''])
               ],
             ),
           ),

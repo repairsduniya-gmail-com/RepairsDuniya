@@ -11,15 +11,18 @@ import 'package:geocoding/geocoding.dart';
 import 'package:repair_duniya/Model_Screens/Home_Screen/home.dart';
 import 'package:provider/provider.dart';
 import 'package:repair_duniya/Model_Screens/Home_Screen/serviceName.dart';
+import 'package:repair_duniya/Model_Screens/Home_boarding_Screen/phoneNumberProvider.dart';
 import 'package:repair_duniya/Model_Screens/Home_boarding_Screen/user.dart';
 import 'package:repair_duniya/Model_Screens/Map_Screen/get_location.dart';
 import 'package:repair_duniya/pop_Up_Screen/Date_Screen.dart';
 import 'package:repair_duniya/pop_Up_Screen/Describe_Screen.dart';
 import 'package:repair_duniya/pop_Up_Screen/bookingConfirmation.dart';
+import 'package:repair_duniya/pop_Up_Screen/urgent_normal.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../pop_Up_Screen/Install_Screen.dart';
 import '../../pop_Up_Screen/booking.dart';
+import '../../pop_Up_Screen/booking_button.dart';
 
 Future<Position> getCurrentLocation() async {
   bool serviceEnabled;
@@ -76,6 +79,7 @@ class DeliveryStatusScreen extends StatelessWidget {
     void createBooking() {
       final selectedserviceNameProvider =
           Provider.of<serviceIdprovider>(context, listen: false);
+
       final service = selectedserviceNameProvider.UserselectedService;
 
       final selectedServiceProvider =
@@ -83,8 +87,8 @@ class DeliveryStatusScreen extends StatelessWidget {
       final selectedService = selectedServiceProvider.selectedService;
 
       final descriptionProvider =
-          Provider.of<DescriptionProvider>(context, listen: false);
-      final Description = descriptionProvider.description;
+          Provider.of<SelectionProvider>(context, listen: false);
+      final Description = descriptionProvider.SelectedValue;
 
       final selectedTimeProvider =
           Provider.of<SelectedTime>(context, listen: false);
@@ -95,7 +99,8 @@ class DeliveryStatusScreen extends StatelessWidget {
 
       final userDataprovider =
           Provider.of<UserDataProvider>(context, listen: false);
-
+      final phoneprovider = Provider.of<PhoneProvider>(context, listen: false);
+      final phonenumber = phoneprovider.getphoneNumber;
       final housenumberProvider = Provider.of<Address>(context, listen: false);
       final HouseNumber = housenumberProvider.houseNumber;
       final address = housenumberProvider.address;
@@ -108,54 +113,71 @@ class DeliveryStatusScreen extends StatelessWidget {
       // Retrieve the corresponding serviceName based on the selected service
       String serviceName;
       String description;
-      if (selectedService == 'installation') {
-        serviceName = 'Installation';
-        description = 'null';
-      } else if (selectedService == 'repair') {
-        serviceName = 'Repair';
-        description = Description;
+      if (selectedService == 'Urgent Booking') {
+        serviceName = 'urgent booking';
+      } else if (selectedService == 'Normal Booking') {
+        serviceName = 'Normal Booking';
       } else {
         // Handle other cases if needed
         return;
       }
+
+      Set<String> generatedIDs = Set<String>();
+
+      String generateUniqueBookingID() {
+        var random = Random();
+        String bookingID;
+
+        // Generate a unique booking ID
+        do {
+          int randomNumber = random.nextInt(9000) + 1000;
+          bookingID = randomNumber.toString();
+        } while (generatedIDs.contains(bookingID));
+
+        // Add the generated ID to the set
+        generatedIDs.add(bookingID);
+
+        return bookingID;
+      }
+
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       Future<int> getRowCount() async {
         QuerySnapshot snapshot = await firestore.collection('bookings').get();
         int rowCount = snapshot.size;
+
         return rowCount;
       }
 
-      // Future<String> generateBookingId() async {
-      //   final date = selectedDate!.day;
-      //   final year = selectedDate.year;
-      //   final uuid = Uuid();
-      //   // final rowCount = getRowCount().then((rowCount) {}).toString();
-      //   String bookinId;
-      //   bookinId = '${date}RD${year}${uuid}';
-      //   return bookinId;
-      // }
       String generateBookingId() {
         final uuid = Uuid();
-        return uuid.v4(); // Generate a version 4 (random) UUID
+        final date = DateTime.now().day;
+        final year = DateTime.now().year;
+        String Id = generateUniqueBookingID();
+        // int count = await getRowCount();
+        final rowCount = getRowCount().toString();
+        String bookingId = "${date}RD${year}${Id}";
+        return bookingId;
+        // return uuid.v4();
+        // Generate a version 4 (random) UUID
       }
 
       // Create a new Booking object with the form data
       final booking = Booking(
           description: Description,
           service: service,
-          serviceName: selectedService,
+          serviceName: serviceName,
           date: selectedDate,
           time: selectedtime,
           bookingId: generateBookingId().toString(),
           houseNumber: HouseNumber,
-          Address: address,
+          address: address,
           houseName: housename,
-          phoneNumber: userDataprovider.userData?.phoneNumber,
+          phoneNumber: userDataprovider.userData?.phoneNumber ?? '',
           username: userDataprovider.userData?.username,
-          CreatedDate: DateTime.now());
+          createdDate: DateTime.now());
 
       // Add the booking to the BookingsProvider
-      bookingsProvider.addBooking(booking, 'username');
+      bookingsProvider.addBooking(booking, phonenumber);
     }
 
     return FutureBuilder<Position>(
