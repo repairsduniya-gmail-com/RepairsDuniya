@@ -12,9 +12,13 @@ class LocationView extends StatefulWidget {
 }
 
 class LocationView_state extends State<LocationView> {
-  // String address = '';
+  String address = '';
   @override
   Widget build(BuildContext context) {
+// <<<<<<< divya
+
+    ScreenUtil.init(context);
+// >>>>>>> main
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -31,9 +35,14 @@ class LocationView_state extends State<LocationView> {
           ),
         ),
         title: Text(
+// <<<<<<< divya
           //address,
           "Pick Your Location",
 
+
+          address,
+          // "Pick Your Location",
+// >>>>>>> main
           style: TextStyle(color: Colors.black),
         ),
         actions: [
@@ -50,6 +59,7 @@ class LocationView_state extends State<LocationView> {
         ],
       ),
       body: OpenStreetMapSearchAndPick(
+// <<<<<<< divya
           center: LatLong(28, 70),
           buttonColor: Colors.black,
           buttonText: 'Set Location',
@@ -57,6 +67,19 @@ class LocationView_state extends State<LocationView> {
             final locationProvider =
                 Provider.of<LocationProvider>(context, listen: false);
             locationProvider.updateLocation(pickedData.address);
+
+//           center: LatLong(23, 89),
+//           buttonColor: Colors.black,
+//           buttonText: 'Set Location',
+//           onPicked: (pickedData) {
+//             var locationProvider =
+//                 Provider.of<LocationProvider>(context, listen: false);
+//             locationProvider.updateLocation(pickedData.address);
+            //print("Data selected");
+            setState(() {
+              address = pickedData.address;
+            });
+// >>>>>>> main
             Navigator.pop(context);
           }),
     );

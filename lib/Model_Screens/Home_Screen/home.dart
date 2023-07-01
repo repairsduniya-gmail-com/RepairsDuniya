@@ -35,8 +35,12 @@ class MyhomeState extends State<Myhome> {
 
   @override
   Widget build(BuildContext context) {
+
     final userDataProvider = Provider.of<UserDataProvider>(context);
     // final phoneNumber = userDataProvider.userData!.phoneNumber;
+// =======
+
+// >>>>>>> main
     var locationProvider = Provider.of<LocationProvider>(context);
     var pickedLocation = locationProvider.pickedLocation;
 
