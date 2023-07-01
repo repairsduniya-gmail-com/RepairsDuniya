@@ -7,6 +7,20 @@ import 'Date_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+showCustomAdressBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+      top: Radius.circular(35),
+    )),
+    clipBehavior: Clip.antiAliasWithSaveLayer,
+    builder: (BuildContext context) {
+      return Address_sheet(DeliveryStatusScreen());
+    },
+  );
+}
+
 class Address_sheet extends StatefulWidget {
   final DeliveryStatusScreen widgetA;
   Address_sheet(this.widgetA);

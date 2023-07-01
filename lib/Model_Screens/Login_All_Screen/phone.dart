@@ -6,13 +6,20 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/src/widgets/container.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:repair_duniya/Model_Screens/Home_boarding_Screen/phoneNumberProvider.dart';
+import 'package:repair_duniya/Model_Screens/Home_boarding_Screen/user.dart';
 import 'package:repair_duniya/Model_Screens/Login_All_Screen/otp.dart';
 // import 'package:repair_duniya/Model_Screens/Login_All_Screen/phone.dart';
+import '../Home_Screen/home.dart';
+import '../Home_boarding_Screen/auth.dart';
+import '../Home_boarding_Screen/home_board.dart';
+import '../Home_boarding_Screen/user.dart' as app_user;
 
 class MyPhone extends StatefulWidget {
   final List<String> imgList = ["assets/login-2.jpg", "assets/login-3.jpg"];
 
-  MyPhone({super.key});
+  MyPhone();
   static String verify = "";
   @override
   State<MyPhone> createState() => _MyPhoneState();
@@ -20,6 +27,34 @@ class MyPhone extends StatefulWidget {
 
 class _MyPhoneState extends State<MyPhone> {
   TextEditingController _countryCode = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+
+  Future<void> _checkPhoneNumber(BuildContext context) async {
+    // final userProvider = Provider.of<UsersProvider>(context, listen: false);
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    // final userDataProvider =
+    //     Provider.of<UserDataProvider>(context, listen: false);
+    final phoneProvider = Provider.of<PhoneProvider>(context, listen: false);
+    final phoneNumber = _phoneNumberController.text.trim();
+    phoneProvider.setPhoneNumber = phoneNumber;
+    if (phoneNumber.isNotEmpty) {
+      final exists = await authProvider.checkPhoneNumberExists(phoneNumber);
+
+      if (exists) {
+        // Phone number exists in the database
+        // Navigate to the home screen or login screen
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Myhome()));
+        // Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        // Phone number doesn't exist in the database
+        // Navigate to the sign-up screen
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => home_board()));
+      }
+    }
+  }
+
   var phone = "";
   @override
   void initState() {
@@ -30,6 +65,9 @@ class _MyPhoneState extends State<MyPhone> {
   String CountryCode = '+91';
   int _current = 0;
   Widget build(BuildContext context) {
+    final userDataProvider =
+        Provider.of<UserDataProvider>(context, listen: false);
+    final phoneNumber = _phoneNumberController.text.trim();
     ScreenUtil.init(context);
     final List<Widget> imgSlider = widget.imgList
         .map(
@@ -136,6 +174,7 @@ class _MyPhoneState extends State<MyPhone> {
                   ),
                   Expanded(
                     child: TextField(
+                      controller: _phoneNumberController,
                       keyboardType: TextInputType.phone,
                       onChanged: (value) {
                         phone = value;
@@ -153,9 +192,35 @@ class _MyPhoneState extends State<MyPhone> {
               height: 45.h,
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (builder) => MyOtp()));
+                onPressed: () async {
+                  _checkPhoneNumber(context);
+                  // Trigger the search for user details when the button is pressed
+                  //  app_user.User? user = await userDataProvider.getUserByPhoneNumber(phoneNumber);
+                  //   if (user != null) {
+                  //     // User found, navigate to the user details screen
+                  //     Navigator.of(context).push(
+                  //       MaterialPageRoute(
+                  //         builder: (context) =>Myhome(),
+                  //       ),
+                  //     );
+                  //   } else {
+                  //     // User not found, show an error message
+                  //     showDialog(
+                  //       context: context,
+                  //       builder: (context) => AlertDialog(
+                  //         title: Text('User not found'),
+                  //         content: Text('No user found with the entered phone number.'),
+                  //         actions: [
+                  //           TextButton(
+                  //             onPressed: () {
+                  //               Navigator.of(context).pop();
+                  //             },
+                  //             child: Text('OK'),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //   );
+                  // }
                 },
 
                 //     async {

@@ -4,7 +4,6 @@ import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.
 import 'package:provider/provider.dart';
 import 'locationprovider.dart';
 
-
 class LocationView extends StatefulWidget {
   const LocationView({Key? key}) : super(key: key);
 
@@ -16,53 +15,50 @@ class LocationView_state extends State<LocationView> {
   // String address = '';
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => LocationProvider(),
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          elevation: 0.0,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 20.0),
-            child: CircleAvatar(
-              backgroundColor: Colors.grey[200],
-              child: const Icon(
-                Icons.location_on,
-                color: Colors.black,
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 20.0),
+          child: CircleAvatar(
+            backgroundColor: Colors.grey[200],
+            child: const Icon(
+              Icons.location_on,
+              color: Colors.black,
             ),
           ),
-          title: Text(
-            //address,
-            "Pick Your Location",
-    
-            style: TextStyle(color: Colors.black),
-          ),
-          actions: [
-            CircleAvatar(
-              backgroundColor: Colors.grey[200],
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.close, color: Colors.black),
-              ),
-            ),
-            SizedBox(width: 20.w)
-          ],
         ),
-        body: OpenStreetMapSearchAndPick(
-            center: LatLong(23, 89),
-            buttonColor: Colors.black,
-            buttonText: 'Set Location',
-            onPicked: (pickedData) {
-              var locationProvider =
-                  Provider.of<LocationProvider>(context, listen: false);
-              locationProvider.updateLocation(pickedData.address);
-              Navigator.pop(context);
-            }),
+        title: Text(
+          //address,
+          "Pick Your Location",
+
+          style: TextStyle(color: Colors.black),
+        ),
+        actions: [
+          CircleAvatar(
+            backgroundColor: Colors.grey[200],
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.close, color: Colors.black),
+            ),
+          ),
+          SizedBox(width: 20.w)
+        ],
       ),
+      body: OpenStreetMapSearchAndPick(
+          center: LatLong(28, 70),
+          buttonColor: Colors.black,
+          buttonText: 'Set Location',
+          onPicked: (pickedData) {
+            final locationProvider =
+                Provider.of<LocationProvider>(context, listen: false);
+            locationProvider.updateLocation(pickedData.address);
+            Navigator.pop(context);
+          }),
     );
   }
 }

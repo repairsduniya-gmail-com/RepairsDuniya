@@ -1,6 +1,7 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:repair_duniya/Model_Screens/Buy_Appliances/buy_appliances.dart';
+import 'package:repair_duniya/Model_Screens/Buy_Appliances/screens/buy_appliances.dart';
+import 'package:repair_duniya/Model_Screens/Buy_Appliances/providers/all_providers.dart';
 import 'package:repair_duniya/Model_Screens/Control_Devices/deviceinstallView.dart';
 // import 'package:repair_duniya/Model_Screens/Map_Screen/location_search_screen.dart';
 // import 'package:repair_duniya/models/constant.dart';
@@ -15,10 +16,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:repair_duniya/Model_Screens/Home_Screen/homeIconButton.dart';
 import 'package:provider/provider.dart';
+import '../Home_boarding_Screen/user.dart';
 
 class Myhome extends StatefulWidget {
   final List<String> homeList = ["assets/Offer-1.jpg", "assets/Offer-2.jpg"];
+  // final User user;
 
+  // Myhome(this.user);
   @override
   State<Myhome> createState() => MyhomeState();
 }
@@ -31,8 +35,15 @@ class MyhomeState extends State<Myhome> {
 
   @override
   Widget build(BuildContext context) {
+    final userDataProvider = Provider.of<UserDataProvider>(context);
+    // final phoneNumber = userDataProvider.userData!.phoneNumber;
     var locationProvider = Provider.of<LocationProvider>(context);
-    var pickedLocation = locationProvider.getLocation();
+    var pickedLocation = locationProvider.pickedLocation;
+
+    bool isLocationAvailable = false;
+    if (pickedLocation != null) {
+      isLocationAvailable = true;
+    }
 
     ScreenUtil.init(context);
     final List<Widget> homeSlider = widget.homeList
@@ -134,9 +145,10 @@ class MyhomeState extends State<Myhome> {
                   ),
                   label: ListTile(
                     title: Text(
-                      //address ?? "Pick Your Location",
+                      // // isLocationAvailable
+                      //     //address ?? "Pick Your Location",
                       "Pick Your Location",
-    
+                      // : pickedLocation!,
                       style: TextStyle(
                           fontSize: 20.sp, fontWeight: FontWeight.w600),
                     ),
@@ -272,7 +284,7 @@ class MyhomeState extends State<Myhome> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Fan(context),
+                      AC(context),
                       Refrigerator(context),
                       Oven(context),
                       Television(context),
@@ -285,8 +297,8 @@ class MyhomeState extends State<Myhome> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    AC(context),
-                    Motercycle(context),
+                    Fan(context),
+                    Geyser(context),
                     Washer(context),
                     More(context),
                   ],
@@ -476,8 +488,9 @@ class MyhomeState extends State<Myhome> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            Buy_appliances()));
+                                        builder: (context) => Buy_appliances()
+                                        // Buy_appliances()
+                                        ));
                               },
                               child: const Text(
                                 "Shop Now",
