@@ -305,147 +305,147 @@ class OrderProvider with ChangeNotifier {
 //   runApp(MyApp());
 // }
 
-class MyAp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Product App',
-      home: ProductScreen(),
-    );
-  }
-}
+// class MyAp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Product App',
+//       home: ProductScreen(),
+//     );
+//   }
+// }
 
-class ProductScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final productsProvider =
-        Provider.of<ProductProvider>(context, listen: false);
-    final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    productsProvider.fetchProducts();
-    final products = productsProvider.products;
+// class ProductScreen extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     final productsProvider =
+//         Provider.of<ProductProvider>(context, listen: false);
+//     final cartProvider = Provider.of<CartProvider>(context, listen: false);
+//     productsProvider.fetchProducts();
+//     final products = productsProvider.products;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Product Screen'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.shopping_cart),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CartsScreen(),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-      body: ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (ctx, index) {
-          final product = products[index];
-          return ListTile(
-            leading: Image.network(product.imageUrl),
-            title: Text(product.title),
-            subtitle: Text(product.subtitle),
-            trailing: IconButton(
-              icon: Icon(
-                product.isFavorite ? Icons.favorite : Icons.favorite_border,
-              ),
-              onPressed: () {
-                productsProvider.toggleFavoriteStatus(product.id);
-              },
-            ),
-            onTap: () {
-              cartProvider.addItem(product);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Added item to cart'),
-                  duration: Duration(seconds: 1),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-}
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Product Screen'),
+//         actions: [
+//           IconButton(
+//             icon: Icon(Icons.shopping_cart),
+//             onPressed: () {
+//               Navigator.push(
+//                 context,
+//                 MaterialPageRoute(
+//                   builder: (context) => CartsScreen(),
+//                 ),
+//               );
+//             },
+//           ),
+//         ],
+//       ),
+//       body: ListView.builder(
+//         itemCount: products.length,
+//         itemBuilder: (ctx, index) {
+//           final product = products[index];
+//           return ListTile(
+//             leading: Image.network(product.imageUrl),
+//             title: Text(product.title),
+//             subtitle: Text(product.subtitle),
+//             trailing: IconButton(
+//               icon: Icon(
+//                 product.isFavorite ? Icons.favorite : Icons.favorite_border,
+//               ),
+//               onPressed: () {
+//                 productsProvider.toggleFavoriteStatus(product.id);
+//               },
+//             ),
+//             onTap: () {
+//               cartProvider.addItem(product);
+//               ScaffoldMessenger.of(context).showSnackBar(
+//                 SnackBar(
+//                   content: Text('Added item to cart'),
+//                   duration: Duration(seconds: 1),
+//                 ),
+//               );
+//             },
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
 
-class CartsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final cartProvider = Provider.of<CartProvider>(context);
-    final ordersProvider = Provider.of<OrderProvider>(context);
-    final cartItems = cartProvider.cartItems;
+// class CartsScreen extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     final cartProvider = Provider.of<CartProvider>(context);
+//     final ordersProvider = Provider.of<OrderProvider>(context);
+//     final cartItems = cartProvider.cartItems;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Cart'),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: cartItems.length,
-              itemBuilder: (ctx, index) {
-                final cartItem = cartItems[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    child: Text(cartItem.quantity.toString()),
-                  ),
-                  title: Text(cartItem.title),
-                  subtitle: Text('Price: \$${cartItem.price}'),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      cartProvider.removeItem(cartItem.id);
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-          SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Total Amount:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  '\$${cartProvider.totalAmount.toStringAsFixed(2)}',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 16),
-          ElevatedButton(
-            child: Text('Place Order'),
-            onPressed: () {
-              ordersProvider.addOrder(cartItems);
-              cartProvider.clearCart();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Order placed successfully'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Cart'),
+//       ),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: ListView.builder(
+//               itemCount: cartItems.length,
+//               itemBuilder: (ctx, index) {
+//                 final cartItem = cartItems[index];
+//                 return ListTile(
+//                   leading: CircleAvatar(
+//                     child: Text(cartItem.quantity.toString()),
+//                   ),
+//                   title: Text(cartItem.title),
+//                   subtitle: Text('Price: \$${cartItem.price}'),
+//                   trailing: IconButton(
+//                     icon: Icon(Icons.delete),
+//                     onPressed: () {
+//                       cartProvider.removeItem(cartItem.id);
+//                     },
+//                   ),
+//                 );
+//               },
+//             ),
+//           ),
+//           SizedBox(height: 16),
+//           Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 16),
+//             child: Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 Text(
+//                   'Total Amount:',
+//                   style: TextStyle(
+//                     fontSize: 18,
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
+//                 Text(
+//                   '\$${cartProvider.totalAmount.toStringAsFixed(2)}',
+//                   style: TextStyle(
+//                     fontSize: 18,
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           SizedBox(height: 16),
+//           ElevatedButton(
+//             child: Text('Place Order'),
+//             onPressed: () {
+//               ordersProvider.addOrder(cartItems);
+//               cartProvider.clearCart();
+//               ScaffoldMessenger.of(context).showSnackBar(
+//                 SnackBar(
+//                   content: Text('Order placed successfully'),
+//                   duration: Duration(seconds: 2),
+//                 ),
+//               );
+//             },
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

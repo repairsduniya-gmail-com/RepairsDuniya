@@ -87,9 +87,9 @@ void main() async {
           // ChangeNotifierProvider(
           //   create: (context) => ProductsProvider(),
           // ),
-          ChangeNotifierProvider(
-            create: (context) => FavoriteItemsProvider(),
-          ),
+          // ChangeNotifierProvider(
+          //   create: (context) => FavoriteItemsProvider(),
+          // ),
           ChangeNotifierProvider(
             create: (context) => OrdersProvider(),
           ),

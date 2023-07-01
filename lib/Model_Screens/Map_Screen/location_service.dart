@@ -115,7 +115,7 @@ class DeliveryStatusScreen extends StatelessWidget {
       String description;
       if (selectedService == 'Urgent Booking') {
         serviceName = 'urgent booking';
-      } else if (selectedService == 'Normal booking') {
+      } else if (selectedService == 'Normal Booking') {
         serviceName = 'Normal Booking';
       } else {
         // Handle other cases if needed

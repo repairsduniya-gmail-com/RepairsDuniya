@@ -1,67 +1,67 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:provider/provider.dart';
+// import 'package:flutter/material.dart';
+// import 'package:firebase_database/firebase_database.dart';
+// import 'package:provider/provider.dart';
 
-class Product {
-  final String id;
-  final String category;
-  final String subtitle;
-  final String title;
-  final String description;
-  final double price;
-  final bool isFavorite;
-  final String imageUrl;
+// class Product {
+//   final String id;
+//   final String category;
+//   final String subtitle;
+//   final String title;
+//   final String description;
+//   final double price;
+//   final bool isFavorite;
+//   final String imageUrl;
 
-  Product({
-    required this.id,
-    required this.category,
-    required this.subtitle,
-    required this.title,
-    required this.description,
-    required this.price,
-    required this.isFavorite,
-    required this.imageUrl,
-  });
-}
+//   Product({
+//     required this.id,
+//     required this.category,
+//     required this.subtitle,
+//     required this.title,
+//     required this.description,
+//     required this.price,
+//     required this.isFavorite,
+//     required this.imageUrl,
+//   });
+// }
 
-class ProductsProvider with ChangeNotifier {
-  List<Product> _products = [];
+// class ProductsProvider with ChangeNotifier {
+//   List<Product> _products = [];
 
-  List<Product> get products {
-    return [..._products];
-  }
+//   List<Product> get products {
+//     return [..._products];
+//   }
 
-  Future<void> fetchProducts() async {
-    try {
-      final DatabaseReference databaseReference =
-          FirebaseDatabase.instance.reference();
-      final snapshot = await databaseReference.child('products').once();
-      final Map<dynamic, dynamic>? extractedData =
-          snapshot.snapshot.value as Map<dynamic, dynamic>?;
-      if (extractedData == null) {
-        return;
-      }
-      final List<Product> loadedProducts = [];
-      extractedData.forEach((key, value) {
-        loadedProducts.add(Product(
-          id: key,
-          category: value['category'],
-          subtitle: value['subtitle'],
-          title: value['title'],
-          description: value['description'],
-          price: value['price'].toDouble(),
-          isFavorite: value['isFavorite'],
-          imageUrl: value['imageUrl'],
-        ));
-      });
-      _products = loadedProducts;
-      notifyListeners();
-    } catch (error) {
-      // Handle error fetching products from Firebase
-      print('Error fetching products: $error');
-    }
-  }
-}
+//   Future<void> fetchProducts() async {
+//     try {
+//       final DatabaseReference databaseReference =
+//           FirebaseDatabase.instance.reference();
+//       final snapshot = await databaseReference.child('products').once();
+//       final Map<dynamic, dynamic>? extractedData =
+//           snapshot.snapshot.value as Map<dynamic, dynamic>?;
+//       if (extractedData == null) {
+//         return;
+//       }
+//       final List<Product> loadedProducts = [];
+//       extractedData.forEach((key, value) {
+//         loadedProducts.add(Product(
+//           id: key,
+//           category: value['category'],
+//           subtitle: value['subtitle'],
+//           title: value['title'],
+//           description: value['description'],
+//           price: value['price'].toDouble(),
+//           isFavorite: value['isFavorite'],
+//           imageUrl: value['imageUrl'],
+//         ));
+//       });
+//       _products = loadedProducts;
+//       notifyListeners();
+//     } catch (error) {
+//       // Handle error fetching products from Firebase
+//       print('Error fetching products: $error');
+//     }
+//   }
+// }
 
 
 
